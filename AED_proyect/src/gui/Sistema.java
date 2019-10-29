@@ -54,6 +54,10 @@ public class Sistema extends JFrame implements ActionListener {
 		JMenu mnMantenimiento = new JMenu("Mantenimiento");
 		menuBar.add(mnMantenimiento);
 		
+		JMenuItem mntmMantenimiento = new JMenuItem("Mantenimiento");
+		mnMantenimiento.add(mntmMantenimiento);
+		mntmMantenimiento.addActionListener(this);
+		
 		JMenu mnRegistro = new JMenu("Registro");
 		menuBar.add(mnRegistro);
 		
@@ -93,6 +97,7 @@ public class Sistema extends JFrame implements ActionListener {
 			actionPerformedMntmConsumo(e);
 		else if ( e.getSource() == mntmHospedaje )
 			actionPerformedMntmHospedaje(e);
+		
 	}
 
 	private void actionPerformedMntmIngreso(ActionEvent e) {
