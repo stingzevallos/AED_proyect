@@ -32,6 +32,7 @@ public class JDialogHospedaje extends JDialog {
 	 * Create the dialog.
 	 */
 	public JDialogHospedaje() {
+		setModal(true);
 		setTitle("Registro | Hospedaje");
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(null);

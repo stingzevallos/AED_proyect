@@ -43,6 +43,7 @@ public class JDialogConsumo extends JDialog {
 	 * Create the dialog.
 	 */
 	public JDialogConsumo() {
+		setModal(true);
 		setTitle("Registro | Consumo");
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(null);
@@ -85,7 +86,7 @@ public class JDialogConsumo extends JDialog {
 		lblConsumoDeSocio_1.setBounds(10, 75, 119, 14);
 		getContentPane().add(lblConsumoDeSocio_1);
 		
-		labelSocio = new JLabel("...");
+		labelSocio = new JLabel("");
 		labelSocio.setFont(new Font("Tahoma", Font.BOLD, 11));
 		labelSocio.setBounds(140, 75, 46, 14);
 		getContentPane().add(labelSocio);

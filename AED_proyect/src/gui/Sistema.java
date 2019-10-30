@@ -48,7 +48,7 @@ public class Sistema extends JFrame implements ActionListener {
 	public Sistema() {
 		setTitle("Sistema");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 548, 311);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -110,15 +110,25 @@ public class Sistema extends JFrame implements ActionListener {
 		else if ( e.getSource() == mntmSocio )
 			actionPerformedMntmSocio(e);
 		else if ( e.getSource() == mntmProducto )
-			actionPerformedMntmSocio(e);
+			actionPerformedMntmProducto(e);
 		else if ( e.getSource() == mntmBungalow )
-			actionPerformedMntmSocio(e);
+			actionPerformedMntmBungalow(e);
 		
 	}
 
+	private void actionPerformedMntmBungalow(ActionEvent e) {
+		JDialogBungalow viewBungalow = new JDialogBungalow();
+		viewBungalow.setVisible(true);
+	}
+
+	private void actionPerformedMntmProducto(ActionEvent e) {
+		JDialogProducto viewProducto = new JDialogProducto();
+		viewProducto.setVisible(true);
+	}
+
 	private void actionPerformedMntmSocio(ActionEvent e) {
-		JDialogSocio viewIngreso = new JDialogSocio();
-		viewIngreso.setVisible(true);
+		JDialogSocio viewSocio = new JDialogSocio();
+		viewSocio.setVisible(true);
 	}
 
 	private void actionPerformedMntmIngreso(ActionEvent e) {

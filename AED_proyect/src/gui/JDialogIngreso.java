@@ -53,6 +53,7 @@ public class JDialogIngreso extends JDialog {
 	 * Create the dialog.
 	 */
 	public JDialogIngreso() {
+		setModal(true);
 		setTitle("Registro | Ingreso");
 		setBounds(100, 100, 450, 342);
 		getContentPane().setLayout(null);
