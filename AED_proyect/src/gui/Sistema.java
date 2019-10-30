@@ -23,7 +23,9 @@ public class Sistema extends JFrame implements ActionListener {
 	private JMenuItem mntmIngreso;
 	private JMenuItem mntmConsumo;
 	private JMenuItem mntmHospedaje;
-	private JMenuItem mntmMantenimiento;
+	private JMenuItem mntmSocio;
+	private JMenuItem mntmProducto;
+	private JMenuItem mntmBungalow;
 
 	/**
 	 * Launch the application.
@@ -55,9 +57,17 @@ public class Sistema extends JFrame implements ActionListener {
 		JMenu mnMantenimiento = new JMenu("Mantenimiento");
 		menuBar.add(mnMantenimiento);
 		
-		mntmMantenimiento = new JMenuItem("Mantenimiento");
-		mnMantenimiento.add(mntmMantenimiento);
-		mntmMantenimiento.addActionListener(this);
+		mntmSocio = new JMenuItem("Socio");
+		mntmSocio.addActionListener(this);
+		mnMantenimiento.add(mntmSocio);
+		
+	    mntmProducto = new JMenuItem("Producto");
+	    mntmProducto.addActionListener(this);
+		mnMantenimiento.add(mntmProducto);
+		
+		mntmBungalow = new JMenuItem("Bungalow");
+		mntmBungalow.addActionListener(this);
+		mnMantenimiento.add(mntmBungalow);
 		
 		JMenu mnRegistro = new JMenu("Registro");
 		menuBar.add(mnRegistro);
@@ -98,13 +108,18 @@ public class Sistema extends JFrame implements ActionListener {
 			actionPerformedMntmConsumo(e);
 		else if ( e.getSource() == mntmHospedaje )
 			actionPerformedMntmHospedaje(e);
-		else if ( e.getSource() == mntmMantenimiento )
-			actionPerformedMntmMantenimiento(e);
+		else if ( e.getSource() == mntmSocio )
+			actionPerformedMntmSocio(e);
+		else if ( e.getSource() == mntmProducto )
+			actionPerformedMntmSocio(e);
+		else if ( e.getSource() == mntmBungalow )
+			actionPerformedMntmSocio(e);
 		
 	}
 
-	private void actionPerformedMntmMantenimiento(ActionEvent e) {
-		// tu parte brandoly
+	private void actionPerformedMntmSocio(ActionEvent e) {
+		JDialogSocio viewIngreso = new JDialogSocio();
+		viewIngreso.setVisible(true);
 	}
 
 	private void actionPerformedMntmIngreso(ActionEvent e) {
