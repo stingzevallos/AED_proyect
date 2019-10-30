@@ -42,6 +42,7 @@ public class JDialogSocio extends JDialog {
 	 * Create the dialog.
 	 */
 	public JDialogSocio() {
+		setModal(true);
 		setFont(new Font("Dialog", Font.BOLD, 12));
 		setTitle("Mantenimiento | Socio");
 		setBounds(100, 100, 749, 379);

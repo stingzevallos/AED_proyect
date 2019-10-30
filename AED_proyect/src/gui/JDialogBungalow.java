@@ -40,6 +40,7 @@ public class JDialogBungalow extends JDialog {
 	 * Create the dialog.
 	 */
 	public JDialogBungalow() {
+		setModal(true);
 		setTitle("Mantenimiento | Bungalow");
 		setBounds(100, 100, 755, 350);
 		getContentPane().setLayout(null);

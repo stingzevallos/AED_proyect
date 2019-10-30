@@ -41,6 +41,7 @@ public class JDialogProducto extends JDialog {
 	 * Create the dialog.
 	 */
 	public JDialogProducto() {
+		setModal(true);
 		setTitle("Mantenimiento | Producto");
 		setBounds(100, 100, 752, 418);
 		getContentPane().setLayout(new BorderLayout());
