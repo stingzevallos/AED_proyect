@@ -1,24 +1,28 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.border.LineBorder;
+
+import clases.Ingreso;
+
 import java.awt.Color;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
-public class JDialogIngreso extends JDialog {
+public class JDialogIngreso extends JDialog implements ActionListener {
 
+	
+	ArrayList<Ingreso> listaIngreso = new ArrayList<Ingreso>();
 	/**
 	 * 
 	 */
@@ -29,7 +33,7 @@ public class JDialogIngreso extends JDialog {
 	private JLabel lblNDeInvitados;
 	private JTextField textFieldCodigoIngreso;
 	private JComboBox comboBoxCodigoSocio;
-	private JTextField textField;
+	private JTextField textFieldNumInvitados;
 	private JLabel lblSX;
 	private JButton btnIngresar;
 	private JLabel lblListaDeSocio;
@@ -87,10 +91,10 @@ public class JDialogIngreso extends JDialog {
 		comboBoxCodigoSocio.setBounds(113, 58, 86, 20);
 		getContentPane().add(comboBoxCodigoSocio);
 		
-		textField = new JTextField();
-		textField.setBounds(113, 83, 46, 20);
-		getContentPane().add(textField);
-		textField.setColumns(10);
+		textFieldNumInvitados = new JTextField();
+		textFieldNumInvitados.setBounds(113, 83, 46, 20);
+		getContentPane().add(textFieldNumInvitados);
+		textFieldNumInvitados.setColumns(10);
 		
 		lblSX = new JLabel("S/ 25.00 x invitado");
 		lblSX.setBounds(169, 86, 107, 14);
@@ -98,6 +102,7 @@ public class JDialogIngreso extends JDialog {
 		
 		btnIngresar = new JButton("Ingresar");
 		btnIngresar.setBounds(335, 32, 89, 23);
+		btnIngresar.addActionListener(this);
 		getContentPane().add(btnIngresar);
 		
 		lblListaDeSocio = new JLabel("LISTA DE SOCIO INGRESADOS");
@@ -114,5 +119,37 @@ public class JDialogIngreso extends JDialog {
 		
 		table = new JTable();
 		panelListaSocio.add(table);
+		
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setBounds(335, 57, 89, 23);
+		btnCancelar.addActionListener(this);
+		getContentPane().add(btnCancelar);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if ( e.getSource() == btnIngresar )
+			actionPerformedBtnIngresar(e);
+		else
+			actionPerformedBtnCancelar(e);
+	}
+
+	private void actionPerformedBtnIngresar(ActionEvent e) { //falta obtener mejor datos, generar auto cod socio
+		Ingreso nuevoIngreso;
+		
+		int codigoIngreso = Integer.parseInt( textFieldCodigoIngreso.getText());
+		int codigoSocio = Integer.parseInt( comboBoxCodigoSocio.getSelectedItem().toString());
+		String fechaIngreso = ""; //aca ira la fecha de ingreso
+		String horaIngreso = ""; // aca ira la hora del sistema;
+		int numeroInvitados =  Integer.parseInt( textFieldNumInvitados.getText());
+		double costoIngreso = 25;
+		int estado = 0;
+		
+		nuevoIngreso = new Ingreso( codigoIngreso, codigoSocio, fechaIngreso, horaIngreso, numeroInvitados, costoIngreso, estado );
+		listaIngreso.add(nuevoIngreso);
+	}
+
+	private void actionPerformedBtnCancelar(ActionEvent e) {
+		dispose();
 	}
 }
