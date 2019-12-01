@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 
 import arreglos.ArregloIngreso;
 import clases.Ingreso;
+import librerias.Resaltador;
 
 import java.awt.Color;
 import javax.swing.JTable;
@@ -27,6 +28,7 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 
 	
 	ArregloIngreso listaIngreso = new ArregloIngreso();
+	ArregloSocio listaSocio = new ArregloSOcio();
 	/**
 	 * 
 	 */
@@ -40,10 +42,14 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 	private JTextField textFieldNumInvitados;
 	private JLabel lblSX;
 	private JButton btnIngresar;
+	private JButton btnBuscar;
 	private JLabel lblListaDeSocio;
 	private JTable table;
 	private DefaultTableModel modelo;
-	private JTextField textFieldBuscador;
+	private JTextField textFieldBuscar;
+	private JComboBox comboBoxBuscador;
+	
+	Resaltador resaltado;
 
 	/**
 	 * Launch the application.
@@ -126,32 +132,37 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 		getContentPane().add(scrollPane);
 		
 		table = new JTable();
-		table.setForeground(Color.LIGHT_GRAY);
+		table.setForeground(Color.BLACK);
 		scrollPane.setViewportView(table);
 		
 		modelo = new DefaultTableModel();
-		modelo.addColumn("Codigo Ingreso");
-		modelo.addColumn("Codigo Socio");
-		modelo.addColumn("Fecha Ingreso");
-		modelo.addColumn("Numero Invitados");
-		modelo.addColumn("Hora Ingreso");
-		modelo.addColumn("Costo Ingreso");
+		modelo.addColumn("Cod. ingreso");
+		modelo.addColumn("Cod. socio");
+		modelo.addColumn("Fecha ingreso");
+		modelo.addColumn("N° invitados");
+		modelo.addColumn("Hora ingreso");
+		modelo.addColumn("Costo ingreso");
 		modelo.addColumn("Estado");
+
+		resaltado = new Resaltador(-1);
 		
 		table.setModel(modelo);
+		table.setDefaultRenderer( Object.class, resaltado);
 		
-		JComboBox comboBoxBuscador = new JComboBox();
+		
+		comboBoxBuscador = new JComboBox();
 		comboBoxBuscador.setModel(new DefaultComboBoxModel(new String[] {"C\u00F3digo", "DNI"}));
 		comboBoxBuscador.setBounds(10, 146, 86, 20);
 		getContentPane().add(comboBoxBuscador);
 		
-		textFieldBuscador = new JTextField();
-		textFieldBuscador.setBounds(106, 146, 111, 20);
-		getContentPane().add(textFieldBuscador);
-		textFieldBuscador.setColumns(10);
+		textFieldBuscar = new JTextField();
+		textFieldBuscar.setBounds(106, 146, 111, 20);
+		getContentPane().add(textFieldBuscar);
+		textFieldBuscar.setColumns(10);
 		
-		JButton btnBuscar = new JButton("Buscar");
+		btnBuscar = new JButton("Buscar");
 		btnBuscar.setBounds(227, 145, 89, 23);
+		btnBuscar.addActionListener(this);
 		getContentPane().add(btnBuscar);
 		
 		listar();
@@ -161,6 +172,8 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if ( e.getSource() == btnIngresar )
 			actionPerformedBtnIngresar(e);
+		else if ( e.getSource() == btnBuscar )
+			actionPerformedBtnBuscar(e);
 		else
 			actionPerformedBtnCancelar(e);
 	}
@@ -192,6 +205,39 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 		
 	}
 
+	private void actionPerformedBtnBuscar(ActionEvent e) {
+		int opcion = comboBoxBuscador.getSelectedIndex();
+		if ( opcion == 0 ) {
+			try {
+				int codigo = Integer.parseInt( textFieldBuscar.getText().trim());
+				int pos = listaIngreso.buscarPosicion(codigo);
+				if ( pos != -1 ) {
+					resaltado.setFila(pos);
+					listar();
+				}
+				else
+					error("No se encontro el CODIGO", textFieldBuscar);
+			}
+			catch( Exception ex ) {
+				error( "Ingrese CODIGO a buscar", textFieldBuscar);
+			}
+		}
+		else if ( opcion == 1 ) {
+			String dni = textFieldBuscar.getText().trim();
+			if ( dni.length() > 0 ) {
+				int pos = listaSocio.buscarDni(dni);
+				if ( pos != -1 ) {
+					resaltado.setFila(pos);
+					listar();
+				}
+				else
+					error("No se encontro el CODIGO", textFieldBuscar);
+			}
+			else
+				error( "Ingrese CODIGO a buscar", textFieldBuscar);
+		}
+	}
+
 	private void actionPerformedBtnCancelar(ActionEvent e) {
 		dispose();
 	}
@@ -205,7 +251,8 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 								listaIngreso.obtener(i).getHoraIngreso(),
 								listaIngreso.obtener(i).getNumeroInvitados(),
 								listaIngreso.obtener(i).getCostoIngreso(),
-								listaIngreso.obtener(i).getEstado() };
+								listaIngreso.obtener(i).getEstado()
+							};
 			modelo.addRow(fila);
 		}
 	}
@@ -218,6 +265,7 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 	void mensaje(String s) {
 		JOptionPane.showMessageDialog(this, s);
 	}
+	
 	void error(String s, JTextField txt) {
 		mensaje(s);
 		txt.setText("");
@@ -246,5 +294,9 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 	
 	int leerCostoIngreso() {
 		return leerNumeroInvitados() * 25;
+	}
+	
+	void resaltar( int pos ) {
+		
 	}
 }
