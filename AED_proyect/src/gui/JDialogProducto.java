@@ -14,7 +14,11 @@ import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
-
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import arreglos.ArregloProducto;
+import clases.Producto;
+import javax.swing.JTable;
 public class JDialogProducto extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
@@ -23,6 +27,7 @@ public class JDialogProducto extends JDialog {
 	private JTextField txtStock;
 	private JTextField txtConsultar;
 	private JTextField txtNombre;
+	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -112,6 +117,13 @@ public class JDialogProducto extends JDialog {
 			}
 			{
 				JButton button = new JButton("Adicionar");
+				button.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						
+						
+						
+					}
+				});
 				button.setFont(new Font("Tahoma", Font.BOLD, 11));
 				button.setBounds(4, 212, 92, 23);
 				panel.add(button);
@@ -174,6 +186,11 @@ public class JDialogProducto extends JDialog {
 				JScrollPane scrollPane = new JScrollPane();
 				scrollPane.setBounds(10, 43, 384, 192);
 				panel.add(scrollPane);
+				{
+					table = new JTable();
+					table.setFillsViewportHeight(true);
+					scrollPane.setViewportView(table);
+				}
 			}
 		}
 		{
