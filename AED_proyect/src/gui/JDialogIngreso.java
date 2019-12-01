@@ -28,7 +28,7 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 
 	
 	ArregloIngreso listaIngreso = new ArregloIngreso();
-	ArregloSocio listaSocio = new ArregloSOcio();
+	//ArregloSocio listaSocio = new ArregloSOcio();
 	/**
 	 * 
 	 */
@@ -222,7 +222,7 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 				error( "Ingrese CODIGO a buscar", textFieldBuscar);
 			}
 		}
-		else if ( opcion == 1 ) {
+		/*else if ( opcion == 1 ) {
 			String dni = textFieldBuscar.getText().trim();
 			if ( dni.length() > 0 ) {
 				int pos = listaSocio.buscarDni(dni);
@@ -235,7 +235,7 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 			}
 			else
 				error( "Ingrese CODIGO a buscar", textFieldBuscar);
-		}
+		}*/ // Se pondra despues el buscar dni
 	}
 
 	private void actionPerformedBtnCancelar(ActionEvent e) {
