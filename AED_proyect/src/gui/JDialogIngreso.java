@@ -8,7 +8,9 @@ import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
 
+import arreglos.ArregloIngreso;
 import clases.Ingreso;
 
 import java.awt.Color;
@@ -18,11 +20,12 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.JScrollPane;
 
 public class JDialogIngreso extends JDialog implements ActionListener {
 
 	
-	ArrayList<Ingreso> listaIngreso = new ArrayList<Ingreso>();
+	ArregloIngreso listaIngreso = new ArregloIngreso();
 	/**
 	 * 
 	 */
@@ -37,8 +40,8 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 	private JLabel lblSX;
 	private JButton btnIngresar;
 	private JLabel lblListaDeSocio;
-	private JPanel panelListaSocio;
 	private JTable table;
+	private DefaultTableModel modelo;
 
 	/**
 	 * Launch the application.
@@ -81,7 +84,7 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 		
 		textFieldCodigoIngreso = new JTextField();
 		textFieldCodigoIngreso.setEditable(false);
-		textFieldCodigoIngreso.setText("40001");
+		textFieldCodigoIngreso.setText( String.valueOf( listaIngreso.generarCodigo()) );
 		textFieldCodigoIngreso.setBounds(113, 33, 86, 20);
 		getContentPane().add(textFieldCodigoIngreso);
 		textFieldCodigoIngreso.setColumns(10);
@@ -111,19 +114,29 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 		lblListaDeSocio.setBounds(10, 121, 414, 14);
 		getContentPane().add(lblListaDeSocio);
 		
-		panelListaSocio = new JPanel();
-		panelListaSocio.setBackground(Color.LIGHT_GRAY);
-		panelListaSocio.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		panelListaSocio.setBounds(10, 136, 414, 156);
-		getContentPane().add(panelListaSocio);
-		
-		table = new JTable();
-		panelListaSocio.add(table);
-		
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.setBounds(335, 57, 89, 23);
 		btnCancelar.addActionListener(this);
 		getContentPane().add(btnCancelar);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 134, 414, 158);
+		getContentPane().add(scrollPane);
+		
+		table = new JTable();
+		table.setForeground(Color.LIGHT_GRAY);
+		scrollPane.setViewportView(table);
+		
+		modelo = new DefaultTableModel();
+		modelo.addColumn("Codigo Ingreso");
+		modelo.addColumn("Codigo Socio");
+		modelo.addColumn("Fecha Ingreso");
+		modelo.addColumn("Numero Invitados");
+		modelo.addColumn("Hora Ingreso");
+		modelo.addColumn("Costo Ingreso");
+		modelo.addColumn("Estado");
+		
+		table.setModel(modelo);
 	}
 
 	@Override
@@ -137,19 +150,44 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 	private void actionPerformedBtnIngresar(ActionEvent e) { //falta obtener mejor datos, generar auto cod socio
 		Ingreso nuevoIngreso;
 		
-		int codigoIngreso = Integer.parseInt( textFieldCodigoIngreso.getText());
-		int codigoSocio = Integer.parseInt( comboBoxCodigoSocio.getSelectedItem().toString());
-		String fechaIngreso = ""; //aca ira la fecha de ingreso
-		String horaIngreso = ""; // aca ira la hora del sistema;
-		int numeroInvitados =  Integer.parseInt( textFieldNumInvitados.getText());
-		double costoIngreso = 25;
+		int codigoIngreso = leerCodigoIngreso();
+		int codigoSocio = leerCodigoSocio();
+		String fechaIngreso = leerFechaIngreso();
+		String horaIngreso = leerHoraIngreso();
+		int numeroInvitados =  leerNumeroInvitados();
+		double costoIngreso = leerCostoIngreso();
 		int estado = 0;
 		
 		nuevoIngreso = new Ingreso( codigoIngreso, codigoSocio, fechaIngreso, horaIngreso, numeroInvitados, costoIngreso, estado );
-		listaIngreso.add(nuevoIngreso);
+		listaIngreso.adicionar(nuevoIngreso);
 	}
 
 	private void actionPerformedBtnCancelar(ActionEvent e) {
 		dispose();
 	}
+	
+	int leerCodigoIngreso() {
+		return Integer.parseInt( textFieldCodigoIngreso.getText().trim());
+	}
+	
+	int leerCodigoSocio() {
+		return Integer.parseInt( comboBoxCodigoSocio.getSelectedItem().toString().trim());
+	}
+	
+	String leerFechaIngreso() {
+		return ""; //aca ira la fecha de ingreso
+	}
+	
+	String leerHoraIngreso() {
+		return ""; // aca ira la hora del sistema;
+	}
+	
+	int leerNumeroInvitados() {
+		return Integer.parseInt( textFieldNumInvitados.getText().trim());
+	}
+	
+	int leerCostoIngreso() {
+		return leerNumeroInvitados() * 25;
+	}
+	
 }

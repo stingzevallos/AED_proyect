@@ -2,22 +2,21 @@ package gui;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
+import arreglos.ArregloHospedaje;
 import clases.Hospedaje;
-import clases.Ingreso;
-
 import javax.swing.JComboBox;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
 
 public class JDialogHospedaje extends JDialog implements ActionListener {
 	
-	ArrayList<Hospedaje> listaHospedaje = new ArrayList<Hospedaje>();
+	ArregloHospedaje listaHospedaje = new ArregloHospedaje();
 	/**
 	 * 
 	 */
@@ -27,6 +26,9 @@ public class JDialogHospedaje extends JDialog implements ActionListener {
 	private JComboBox comboBoxBungalow;
 	private JButton btnHospedar;
 	private JButton btnCancelar;
+	private JTable table;
+	private JScrollPane scrollPane;
+	private DefaultTableModel modelo;
 
 	/**
 	 * Launch the application.
@@ -58,7 +60,7 @@ public class JDialogHospedaje extends JDialog implements ActionListener {
 			textFieldCodigoHospedaje = new JTextField();
 			textFieldCodigoHospedaje.setEnabled(false);
 			textFieldCodigoHospedaje.setEditable(false);
-			textFieldCodigoHospedaje.setText("50001");
+			textFieldCodigoHospedaje.setText( String.valueOf( listaHospedaje.generarCodigo()));
 			textFieldCodigoHospedaje.setBounds(120, 8, 60, 20);
 			getContentPane().add(textFieldCodigoHospedaje);
 			textFieldCodigoHospedaje.setColumns(10);
@@ -89,17 +91,31 @@ public class JDialogHospedaje extends JDialog implements ActionListener {
 			btnHospedar.setBounds(335, 7, 89, 23);
 			getContentPane().add(btnHospedar);
 		}
-		{
-			JPanel panelHospedados = new JPanel();
-			panelHospedados.setBackground(Color.LIGHT_GRAY);
-			panelHospedados.setBounds(10, 86, 414, 164);
-			getContentPane().add(panelHospedados);
-		}
 		
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(this);
 		btnCancelar.setBounds(335, 32, 89, 23);
 		getContentPane().add(btnCancelar);
+		{
+			scrollPane = new JScrollPane();
+			scrollPane.setBounds(10, 86, 414, 164);
+			getContentPane().add(scrollPane);
+			{
+				table = new JTable();
+				scrollPane.setViewportView(table);
+				
+				modelo = new DefaultTableModel();
+				modelo.addColumn("Codigo Hospedaje");
+				modelo.addColumn("Codigo Ingreso");
+				modelo.addColumn("Numero Bungalow");
+				modelo.addColumn("Fecha Salida");
+				modelo.addColumn("Hora Salida");
+				modelo.addColumn("Costo Hospedaje");
+				modelo.addColumn("Estado");
+				
+				table.setModel(modelo);
+			}
+		}
 	}
 
 	@Override
@@ -113,20 +129,45 @@ public class JDialogHospedaje extends JDialog implements ActionListener {
 	private void actionPerformedBtnHospedar(ActionEvent e) { // falta obtener datos auto, actualizar bungalow y fechas
 		Hospedaje nuevoHospedaje;
 		
-		int codigoHospedaje = Integer.parseInt( textFieldCodigoHospedaje.getText());
-		int codigoIngreso = Integer.parseInt( comboBoxCodigoIngreso.getSelectedItem().toString());
-		int numeroBungalow = Integer.parseInt( comboBoxBungalow.getSelectedItem().toString());
-		String fechaSalida = "";
-		String horaSalida = "";
+		int codigoHospedaje = leerCodigoHospedaje();
+		int codigoIngreso = leerCodigoIngreso();
+		int numeroBungalow = leerNumeroBungalow();
+		String fechaSalida = leerFechaSalida();;
+		String horaSalida = leerHoraSalida();
 		double costoHospedaje = 0;
 		int estado = 0;
 		
 		nuevoHospedaje = new Hospedaje( codigoHospedaje, codigoIngreso, numeroBungalow, fechaSalida, horaSalida, costoHospedaje, estado );
-		listaHospedaje.add(nuevoHospedaje);
+		listaHospedaje.adicionar(nuevoHospedaje);
 		
 	}
 
 	private void actionPerformedBtnCancelar(ActionEvent e) {
 		dispose();
 	}
+	
+	int leerCodigoHospedaje() {
+		return Integer.parseInt( textFieldCodigoHospedaje.getText());
+	}
+	
+	int leerCodigoIngreso() {
+		return Integer.parseInt( comboBoxCodigoIngreso.getSelectedItem().toString());
+	}
+	
+	int leerNumeroBungalow() {
+		return Integer.parseInt( comboBoxBungalow.getSelectedItem().toString());
+	}
+	
+	String leerFechaSalida() {
+		return ""; // aca ira la hora del sistema;
+	}
+	
+	String leerHoraSalida() {
+		return "";
+	}
+	
+	int leerCostoHospedaje() {
+		return 0;
+	}
+	
 }
