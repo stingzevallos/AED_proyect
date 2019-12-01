@@ -41,7 +41,7 @@ public class ArregloHospedaje {
 		ah.remove(e);
 	}
 	
-	public void grabarIngresos() {
+	public void grabarHospedajes() {
 		try {
 			PrintWriter pw;
 			String linea;
