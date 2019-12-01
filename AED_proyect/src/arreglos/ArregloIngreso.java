@@ -29,6 +29,13 @@ public class ArregloIngreso {
 		return ai.get(pos);
 	}
 	
+	public int buscarPosicion( int codigo ) {
+		for ( int i=0; i<tamaño(); i++ )
+			if ( obtener(i).getCodigoIngreso() == codigo)
+				return i;
+		return -1;
+	}
+	
 	public Ingreso buscar( int codigo ) {
 		for ( int i=0; i<tamaño(); i++ )
 			if ( obtener(i).getCodigoIngreso() == codigo)
