@@ -2,12 +2,16 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import clases.Hospedaje;
+import clases.Socio;
+import arreglos.ArregloHospedaje;
+import arreglos.ArregloProducto;
 import java.awt.SystemColor;
+import java.util.ArrayList;
 import javax.swing.border.BevelBorder;
 import javax.swing.JTextField;
 import java.awt.Font;
@@ -17,12 +21,19 @@ import java.awt.Color;
 import java.awt.Button;
 import java.awt.Panel;
 import java.awt.ScrollPane;
+import javax.swing.JComboBox;
 
 public class JDialogHospedajes extends JDialog {
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
+	private JTextField txtCodigo;
+	private JTextField txtCli;
+	private JTextField txtApe;
+	private JTextField txtFecha;
+	private JTextField txtCategoria;
+	private JTextField txtPrecio;
+	private JTextField txtTotaldias;
+	private JTextField txtNumero;
+	private JTextField txtTotalPagar;
+	private JComboBox cboHospedaje;
 
 	/**
 	 * Launch the application.
@@ -41,91 +52,155 @@ public class JDialogHospedajes extends JDialog {
 	 * Create the dialog.
 	 */
 	public JDialogHospedajes() {
-		getContentPane().setBackground(SystemColor.textInactiveText);
+		getContentPane().setBackground(Color.LIGHT_GRAY);
 		setTitle("Pago | Hospedajes");
-		setBounds(100, 100, 523, 303);
+		setBounds(100, 100, 619, 325);
 		getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
-		panel.setBackground(SystemColor.info);
-		panel.setBounds(10, 11, 212, 205);
+		panel.setBackground(Color.WHITE);
+		panel.setBounds(10, 8, 583, 131);
 		getContentPane().add(panel);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(52, 13, 110, 20);
-		panel.add(textField);
-		
-		JButton btnConsultarDatos = new JButton("Ver datos");
+		JButton btnConsultarDatos = new JButton("Consultar");
 		btnConsultarDatos.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnConsultarDatos.setBounds(10, 104, 192, 23);
+		btnConsultarDatos.setBounds(295, 11, 99, 23);
 		panel.add(btnConsultarDatos);
 		
-		JButton button_1 = new JButton("Eliminar");
-		button_1.setFont(new Font("Tahoma", Font.BOLD, 11));
-		button_1.setBounds(10, 172, 192, 23);
-		panel.add(button_1);
-		
-		JLabel lblCdigo = new JLabel("C\u00F3digo:");
-		lblCdigo.setBounds(10, 15, 46, 14);
+		JLabel lblCdigo = new JLabel("C\u00F3digo de hospedaje:");
+		lblCdigo.setBounds(10, 15, 121, 14);
 		panel.add(lblCdigo);
 		
-		JLabel lblFecha = new JLabel("Fecha:");
-		lblFecha.setBounds(10, 44, 46, 14);
+		JLabel lblFecha = new JLabel("Fecha y hora de ingreso:");
+		lblFecha.setBounds(295, 43, 130, 14);
 		panel.add(lblFecha);
 		
-		JLabel lblHora = new JLabel("Hora:");
-		lblHora.setBounds(10, 73, 46, 14);
-		panel.add(lblHora);
+		cboHospedaje = new JComboBox();
+		cboHospedaje.setBounds(132, 12, 138, 20);
+		panel.add(cboHospedaje);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(52, 42, 110, 20);
-		panel.add(textField_1);
-		textField_1.setColumns(10);
+		JLabel lblCdigoDelCliente = new JLabel("C\u00F3digo del cliente:");
+		lblCdigoDelCliente.setBounds(10, 40, 112, 14);
+		panel.add(lblCdigoDelCliente);
 		
-		textField_2 = new JTextField();
-		textField_2.setBounds(52, 73, 110, 20);
-		panel.add(textField_2);
-		textField_2.setColumns(10);
+		JLabel lblNombreDelCliente = new JLabel("Nombre del cliente:");
+		lblNombreDelCliente.setBounds(10, 65, 99, 14);
+		panel.add(lblNombreDelCliente);
 		
-		JButton btnVerDeuda = new JButton("Ver detalle de hospedaje");
-		btnVerDeuda.setFont(new Font("Tahoma", Font.BOLD, 11));
-		btnVerDeuda.setBounds(10, 138, 192, 23);
-		panel.add(btnVerDeuda);
+		JLabel lblApellidosDelCliente = new JLabel("Apellidos del cliente:");
+		lblApellidosDelCliente.setBounds(10, 90, 99, 14);
+		panel.add(lblApellidosDelCliente);
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setLayout(null);
-		panel_2.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
-		panel_2.setBackground(SystemColor.info);
-		panel_2.setBounds(232, 11, 267, 99);
-		getContentPane().add(panel_2);
+		txtCodigo = new JTextField();
+		txtCodigo.setBounds(132, 40, 138, 20);
+		panel.add(txtCodigo);
+		txtCodigo.setColumns(10);
+		
+		txtCli = new JTextField();
+		txtCli.setBounds(132, 65, 138, 20);
+		panel.add(txtCli);
+		txtCli.setColumns(10);
+		
+		txtApe = new JTextField();
+		txtApe.setBounds(132, 89, 138, 20);
+		panel.add(txtApe);
+		txtApe.setColumns(10);
+		
+		txtFecha = new JTextField();
+		txtFecha.setBounds(435, 40, 138, 20);
+		panel.add(txtFecha);
+		txtFecha.setColumns(10);
+		
+		JButton btnPagar = new JButton("Pagar");
+		btnPagar.setBackground(Color.RED);
+		btnPagar.setBounds(370, 247, 89, 23);
+		getContentPane().add(btnPagar);
+		
+		JButton btnSalir = new JButton("Salir");
+		btnSalir.setBackground(Color.RED);
+		btnSalir.setBounds(504, 247, 89, 23);
+		getContentPane().add(btnSalir);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setLayout(null);
 		panel_1.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
-		panel_1.setBackground(SystemColor.info);
-		panel_1.setBounds(232, 121, 267, 95);
+		panel_1.setBackground(Color.WHITE);
+		panel_1.setBounds(10, 150, 583, 79);
 		getContentPane().add(panel_1);
 		
+		JLabel lblNmeroDeBungalow = new JLabel("N\u00FAmero de bungalow");
+		lblNmeroDeBungalow.setBounds(10, 15, 112, 14);
+		panel_1.add(lblNmeroDeBungalow);
+		
+		JLabel lblTotalDeDas = new JLabel("Total de d\u00EDas:");
+		lblTotalDeDas.setBounds(300, 40, 130, 14);
+		panel_1.add(lblTotalDeDas);
+		
+		JLabel lblCategora = new JLabel("Categor\u00EDa:");
+		lblCategora.setBounds(10, 40, 112, 14);
+		panel_1.add(lblCategora);
+		
+		JLabel lblPrecioPorDa = new JLabel("Precio por d\u00EDa:");
+		lblPrecioPorDa.setBounds(300, 15, 110, 14);
+		panel_1.add(lblPrecioPorDa);
+		
+		txtCategoria = new JTextField();
+		txtCategoria.setColumns(10);
+		txtCategoria.setBounds(132, 40, 138, 20);
+		panel_1.add(txtCategoria);
+		
+		txtPrecio = new JTextField();
+		txtPrecio.setColumns(10);
+		txtPrecio.setBounds(420, 12, 153, 20);
+		panel_1.add(txtPrecio);
+		
+		txtTotaldias = new JTextField();
+		txtTotaldias.setColumns(10);
+		txtTotaldias.setBounds(420, 40, 153, 20);
+		panel_1.add(txtTotaldias);
+		
+		txtNumero = new JTextField();
+		txtNumero.setBounds(134, 12, 136, 20);
+		panel_1.add(txtNumero);
+		txtNumero.setColumns(10);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBounds(10, 240, 218, 30);
+		getContentPane().add(panel_2);
+		
 		JLabel lblTotalAPagar = new JLabel("Total a pagar:");
-		lblTotalAPagar.setBounds(20, 67, 104, 14);
-		panel_1.add(lblTotalAPagar);
+		panel_2.add(lblTotalAPagar);
 		
-		textField_3 = new JTextField();
-		textField_3.setBounds(134, 64, 86, 20);
-		panel_1.add(textField_3);
-		textField_3.setColumns(10);
-		
-		JButton btnPagar = new JButton("Pagar");
-		btnPagar.setBackground(Color.YELLOW);
-		btnPagar.setBounds(410, 224, 89, 23);
-		getContentPane().add(btnPagar);
-		
-		JButton btnSalir = new JButton("Salir");
-		btnSalir.setBackground(Color.YELLOW);
-		btnSalir.setBounds(10, 224, 89, 23);
-		getContentPane().add(btnSalir);
+		txtTotalPagar = new JTextField();
+		panel_2.add(txtTotalPagar);
+		txtTotalPagar.setColumns(10);
 	}
+	
+	
+	private void cargarCbo() {
+		hospe = new ArregloHospedaje();
+		ArrayList<ArregloHospedaje> li = hospe.hospedajespendientes();
+		cboHospedaje.addItem("Seleccione");
+		
+		
+		
+		private void inicializar() {
+			
+			
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	
+	
+	
+	
 }

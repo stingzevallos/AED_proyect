@@ -77,4 +77,6 @@ public class Ingreso {
 		this.estado = estado;
 	}
 	
+	
+	
 }
