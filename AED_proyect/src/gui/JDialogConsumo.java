@@ -7,11 +7,15 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
+import arreglos.ArregloConsumos;
 import arreglos.ArregloIngreso;
 import arreglos.ArregloProducto;
+import clases.Consumo;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
@@ -41,6 +45,12 @@ public class JDialogConsumo extends JDialog implements ActionListener {
 	private JButton btnQuitar;
 	private JLabel labelSocio;
 	private JButton btnSalir;
+	private JTextField textFieldCantidad;
+	private JLabel lblCantidad;
+
+	private DefaultTableModel modelo;
+
+	private ArregloConsumos ac;
 
 	/**
 	 * Launch the application.
@@ -61,7 +71,7 @@ public class JDialogConsumo extends JDialog implements ActionListener {
 	public JDialogConsumo() {
 		setModal(true);
 		setTitle("Registro | Consumo");
-		setBounds(100, 100, 560, 366);
+		setBounds(100, 100, 560, 398);
 		getContentPane().setLayout(null);
 		
 		lblCodigoSocio = new JLabel("Codigo Socio");
@@ -96,17 +106,17 @@ public class JDialogConsumo extends JDialog implements ActionListener {
 		buttonAgregar.addActionListener(this);
 		getContentPane().add(buttonAgregar);
 		
-		lblPrecioUnitario = new JLabel("S/. p.u.");
-		lblPrecioUnitario.setBounds(290, 40, 105, 14);
+		lblPrecioUnitario = new JLabel("S/. c/u");
+		lblPrecioUnitario.setBounds(283, 40, 105, 14);
 		getContentPane().add(lblPrecioUnitario);
 		
 		lblConsumoDeSocio_1 = new JLabel("CONSUMO DE SOCIO: ");
 		lblConsumoDeSocio_1.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblConsumoDeSocio_1.setBounds(10, 68, 119, 14);
+		lblConsumoDeSocio_1.setBounds(10, 93, 119, 14);
 		getContentPane().add(lblConsumoDeSocio_1);
 		
 		textFieldProducto = new JTextField();
-		textFieldProducto.setBounds(168, 37, 112, 20);
+		textFieldProducto.setBounds(168, 37, 105, 20);
 		getContentPane().add(textFieldProducto);
 		textFieldProducto.setColumns(10);
 		
@@ -115,19 +125,38 @@ public class JDialogConsumo extends JDialog implements ActionListener {
 		getContentPane().add(btnQuitar);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 90, 524, 192);
+		scrollPane.setBounds(10, 118, 524, 192);
 		getContentPane().add(scrollPane);
 		
 		table = new JTable();
 		scrollPane.setViewportView(table);
 		
+		modelo = new DefaultTableModel();
+		modelo.addColumn("Cod. Socio");
+		modelo.addColumn("Cod. Producto");
+		modelo.addColumn("Detalle");
+		modelo.addColumn("Precio");
+		modelo.addColumn("Cantidad");
+		modelo.addColumn("Importe");
+		
+		table.setModel(modelo);
+		
 		labelSocio = new JLabel("aca ira el socio");
-		labelSocio.setBounds(139, 68, 141, 14);
+		labelSocio.setBounds(149, 93, 141, 14);
 		getContentPane().add(labelSocio);
 		
 		btnSalir = new JButton("Salir");
-		btnSalir.setBounds(445, 293, 89, 23);
+		btnSalir.setBounds(445, 325, 89, 23);
 		getContentPane().add(btnSalir);
+		
+		textFieldCantidad = new JTextField();
+		textFieldCantidad.setBounds(96, 62, 33, 20);
+		getContentPane().add(textFieldCantidad);
+		textFieldCantidad.setColumns(10);
+		
+		lblCantidad = new JLabel("Cantidad");
+		lblCantidad.setBounds(10, 65, 76, 14);
+		getContentPane().add(lblCantidad);
 	}
 
 	@Override
@@ -163,7 +192,17 @@ public class JDialogConsumo extends JDialog implements ActionListener {
 	}
 
 	private void actionPerformedButtonAgregar(ActionEvent e) {
-		// TODO Auto-generated method stub
+		int codigoSocio = leerCodigoSocio();
+		int codigoProducto = leerCodigoProducto();
+		String detalle = ap.buscar(codigoProducto).getDetalle();
+		double precio = ap.buscar(codigoProducto).getPrecio();
+		
+		ac = new ArregloConsumos(codigoSocio);
+		ac.agregarProductos( new Consumo( codigoProducto, detalle, precio, 1) );
+		ac.grabarConsumos();
+		
+		listar();
+		limpieza();
 		
 	}
 
@@ -174,6 +213,38 @@ public class JDialogConsumo extends JDialog implements ActionListener {
 
 	private void actionPerformedBtnSalir(ActionEvent e) {
 		dispose();
+	}
+	
+	void listar() {
+		modelo.setRowCount(0);
+		for (int i=0; i<ac.productosConsumidos(); i++) {
+			Object[] fila = { 	ac.getCodigoSocio(),
+								ac.obtener(i).getCodigoProducto(),
+								ac.obtener(i).getDetalle(),
+								ac.obtener(i).getPrecio(),
+								ac.obtener(i).getCantidad(),
+								ac.obtener(i).importe()
+							};
+			modelo.addRow(fila);
+		}
+	}
+	
+	void limpieza() {
+		textFieldCantidad.setText("");
+		textFieldSocio.setText("");
+		textFieldProducto.setText("");
+		lblPrecioUnitario.setText("");
+		comboBoxCodigoSocio.requestFocus();
+	}	
+	
+	void mensaje(String s) {
+		JOptionPane.showMessageDialog(this, s);
+	}
+	
+	void error(String s, JTextField txt) {
+		mensaje(s);
+		txt.setText("");
+		txt.requestFocus();
 	}
 	
 	int leerCodigoSocio() {
