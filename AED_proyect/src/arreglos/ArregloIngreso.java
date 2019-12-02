@@ -37,8 +37,15 @@ public class ArregloIngreso {
 	}
 	
 	public Ingreso buscar( int codigo ) {
-		for ( int i=0; i<tamaño(); i++ )
+		for ( int i=tamaño()-1; i>=0; i++ )
 			if ( obtener(i).getCodigoIngreso() == codigo)
+				return obtener(i);
+		return null;
+	}
+	
+	public Ingreso buscarSocio( int codigoSocio ) {
+		for ( int i=tamaño()-1; i>=0; i-- )
+			if ( obtener(i).getCodigoSocio() == codigoSocio)
 				return obtener(i);
 		return null;
 	}

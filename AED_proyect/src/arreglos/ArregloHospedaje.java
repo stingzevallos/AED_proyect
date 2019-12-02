@@ -31,10 +31,24 @@ public class ArregloHospedaje {
 	}
 	
 	public Hospedaje buscar( int codigo ) {
-		for ( int i=0; i<tamaño(); i++ )
-			if ( obtener(i).getCodigoIngreso() == codigo)
+		for ( int i=tamaño()-1; i>=0; i++ )
+			if ( obtener(i).getCodigoHospedaje() == codigo)
 				return obtener(i);
 		return null;
+	}
+	
+	public Hospedaje buscarIngreso( int codigoIngreso ) {
+		for ( int i=tamaño()-1; i>=0; i-- )
+			if ( obtener(i).getCodigoIngreso() == codigoIngreso )
+				return obtener(i);
+		return null;
+	}
+	
+	public int buscarPosicion( int codigo ) {
+		for ( int i=tamaño()-1; i>=0; i-- )
+			if ( obtener(i).getCodigoHospedaje() == codigo )
+				return i;
+		return -1;
 	}
 	
 	public void eliminar( Hospedaje e ) {
@@ -51,8 +65,8 @@ public class ArregloHospedaje {
 				linea = obtener(i).getCodigoHospedaje() + ";" + 
 						obtener(i).getCodigoIngreso() + ";" + 
 						obtener(i).getNumeroBungalow() + ";" +
-						obtener(i).getFechaSalida() + ";" + 
-						obtener(i).getHoraSalida() + ";" + 
+						obtener(i).getFechaIngreso() + ";" + 
+						obtener(i).getHoraIngreso() + ";" + 
 						obtener(i).getCostoHospedaje() + ";" + 
 						obtener(i).getEstado();
 				pw.println(linea);
@@ -67,7 +81,7 @@ public class ArregloHospedaje {
 	public void cargarHospedajes() {
 		try {
 			BufferedReader br;
-			String linea, fechaSalida, horaSalida;
+			String linea, fechaIngreso, horaIngreso;
 			int codigoIngreso, codigoHospedaje, numeroBungalow, estado;
 			double costoHospedaje;
 			String[] s;
@@ -79,12 +93,12 @@ public class ArregloHospedaje {
 				codigoHospedaje = Integer.parseInt( s[0].trim());
 				codigoIngreso = Integer.parseInt( s[1].trim());
 				numeroBungalow = Integer.parseInt( s[2].trim());
-				fechaSalida = s[3].trim();
-				horaSalida = s[4].trim();
+				fechaIngreso = s[3].trim();
+				horaIngreso = s[4].trim();
 				costoHospedaje = Double.parseDouble( s[5]);
 				estado = Integer.parseInt( s[6]);
-				adicionar( new Hospedaje( codigoHospedaje, codigoIngreso, numeroBungalow, fechaSalida, 
-						horaSalida, costoHospedaje, estado));
+				adicionar( new Hospedaje( codigoHospedaje, codigoIngreso, numeroBungalow, fechaIngreso, 
+						horaIngreso, costoHospedaje, estado));
 				linea  = br.readLine();
 			}
 			br.close();

@@ -4,19 +4,19 @@ public class Hospedaje {
 	private int codigoHospedaje;
 	private int codigoIngreso;
 	private int numeroBungalow;
-	private String fechaSalida;
-	private String horaSalida;
+	private String fechaIngreso;
+	private String horaIngreso;
 	private double costoHospedaje;
 	private int estado;
 	
-	public Hospedaje(int codigoHospedaje, int codigoIngreso, int numeroBungalow, String fechaSalida, String horaSalida, double costoHospedaje,
+	public Hospedaje(int codigoHospedaje, int codigoIngreso, int numeroBungalow, String fechaIngreso, String horaIngreso, double costoHospedaje,
 			int estado) {
 		super();
 		this.codigoHospedaje = codigoHospedaje;
 		this.codigoIngreso = codigoIngreso;
 		this.numeroBungalow = numeroBungalow;
-		this.fechaSalida = fechaSalida;
-		this.horaSalida = horaSalida;
+		this.fechaIngreso = fechaIngreso;
+		this.horaIngreso = horaIngreso;
 		this.costoHospedaje = costoHospedaje;
 		this.estado = estado;
 	}
@@ -45,20 +45,20 @@ public class Hospedaje {
 		this.numeroBungalow = numeroBungalow;
 	}
 
-	public String getFechaSalida() {
-		return fechaSalida;
+	public String getFechaIngreso() {
+		return fechaIngreso;
 	}
 
-	public void setFechaSalida(String fechaSalida) {
-		this.fechaSalida = fechaSalida;
+	public void setFechaIngreso(String fechaIngreso) {
+		this.fechaIngreso = fechaIngreso;
 	}
 
-	public String getHoraSalida() {
-		return horaSalida;
+	public String getHoraIngreso() {
+		return horaIngreso;
 	}
 
-	public void setHoraSalida(String horaSalida) {
-		this.horaSalida = horaSalida;
+	public void setHoraIngreso(String horaIngreso) {
+		this.horaIngreso = horaIngreso;
 	}
 
 	public double getCostoHospedaje() {

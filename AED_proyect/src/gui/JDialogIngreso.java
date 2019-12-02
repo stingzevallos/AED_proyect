@@ -29,7 +29,7 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 
 	
 	ArregloIngreso listaIngreso = new ArregloIngreso();
-	//ArregloSocio listaSocio = new ArregloSOcio();
+	//ArregloSocio listaSocio = new ArregloSocio();
 	/**
 	 * 
 	 */
@@ -187,19 +187,25 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 		try {
 			int codigoIngreso = leerCodigoIngreso();
 			int codigoSocio = leerCodigoSocio();
-			String fechaIngreso = leerFechaIngreso();
-			String horaIngreso = leerHoraIngreso();
-			int numeroInvitados =  leerNumeroInvitados();
-			double costoIngreso = leerCostoIngreso();
-			int estado = 0;
-			
-			nuevoIngreso = new Ingreso( codigoIngreso, codigoSocio, fechaIngreso, horaIngreso, numeroInvitados, costoIngreso, estado );
-			listaIngreso.adicionar(nuevoIngreso);
-			listaIngreso.grabarIngresos();
-			listar();
-			limpieza();
+			Ingreso ingreso = listaIngreso.buscarSocio(codigoSocio);
+			if ( (ingreso == null) || (ingreso.getEstado() == 1) ) {
+				String fechaIngreso = leerFechaIngreso();
+				String horaIngreso = leerHoraIngreso();
+				int numeroInvitados =  leerNumeroInvitados();
+				double costoIngreso = leerCostoIngreso();
+				int estado = 0;
+				
+				nuevoIngreso = new Ingreso( codigoIngreso, codigoSocio, fechaIngreso, horaIngreso, numeroInvitados, costoIngreso, estado );
+				listaIngreso.adicionar(nuevoIngreso);
+				listaIngreso.grabarIngresos();
+				listar();
+				limpieza();
 
-			textFieldCodigoIngreso.setText( String.valueOf( listaIngreso.generarCodigo()) );
+				textFieldCodigoIngreso.setText( String.valueOf( listaIngreso.generarCodigo()) );
+			}
+			else {
+				mensaje("No se puede ingresar a socio. Socio esta presente en el club.");
+			}
 			
 		}
 		catch( Exception exc ) {
