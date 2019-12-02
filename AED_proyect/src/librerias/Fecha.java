@@ -9,7 +9,7 @@ public class Fecha {
 		System.out.println(fechaSistema());
 		System.out.println(horaSistema());
 		Date fec = construirFecha("17/05/2019");
-		int dias = calcularDifDiasHoy(fec);
+		int dias = calcularDiasHoy(fec);
 		System.out.println(dias);
 	}
 	
@@ -49,7 +49,7 @@ public class Fecha {
 		return fecha;		
 	}
 	
-	public static int calcularDifDiasHoy(Date fIni) {
+	public static int calcularDiasHoy(Date fIni) {
 		long dias;
 		Date fSist = new Date();
 		dias = ((fSist.getTime()-fIni.getTime())/(24 * 60 * 60 * 1000));

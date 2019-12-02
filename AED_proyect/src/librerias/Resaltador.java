@@ -40,8 +40,8 @@ public class Resaltador implements TableCellRenderer {
  
         // Si la celda esta en la fila indicada y no esta seleccionada se coloreara de este modo        
         if (fila.compareTo(row) == 0 && isSelected == false) {
-            c.setBackground(Color.decode("#e6e6e6"));
-            c.setForeground(Color.BLACK);
+            c.setBackground(Color.decode("#2f476e"));
+            c.setForeground(Color.WHITE);
         // Si la celda esta en la fila indicada y esta seleccionada se coloreara de este modo
         } else if (fila.compareTo(row) == 0 && isSelected == true) {
             c.setBackground(Color.RED);

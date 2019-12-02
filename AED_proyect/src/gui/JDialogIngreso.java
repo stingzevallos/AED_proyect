@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 
 import arreglos.ArregloIngreso;
 import clases.Ingreso;
+import librerias.Fecha;
 import librerias.Resaltador;
 
 import java.awt.Color;
@@ -132,6 +133,7 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 		getContentPane().add(scrollPane);
 		
 		table = new JTable();
+		table.setEnabled(false);
 		table.setForeground(Color.BLACK);
 		scrollPane.setViewportView(table);
 		
@@ -139,8 +141,8 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 		modelo.addColumn("Cod. ingreso");
 		modelo.addColumn("Cod. socio");
 		modelo.addColumn("Fecha ingreso");
-		modelo.addColumn("N° invitados");
 		modelo.addColumn("Hora ingreso");
+		modelo.addColumn("N° invitados");
 		modelo.addColumn("Costo ingreso");
 		modelo.addColumn("Estado");
 
@@ -181,6 +183,7 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 	private void actionPerformedBtnIngresar(ActionEvent e) { //falta obtener mejor datos, generar auto cod socio
 		Ingreso nuevoIngreso;
 		
+		resaltado.setFila(-1);
 		try {
 			int codigoIngreso = leerCodigoIngreso();
 			int codigoSocio = leerCodigoSocio();
@@ -245,13 +248,14 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 	void listar() {
 		modelo.setRowCount(0);
 		for (int i=0; i<listaIngreso.tamaño(); i++) {
+			String estado = ( listaIngreso.obtener(i).getEstado()==0 ) ? "Pendiente": "Pagado";
 			Object[] fila = { 	listaIngreso.obtener(i).getCodigoIngreso(),
 								listaIngreso.obtener(i).getCodigoSocio(),
 								listaIngreso.obtener(i).getFechaIngreso(),
 								listaIngreso.obtener(i).getHoraIngreso(),
 								listaIngreso.obtener(i).getNumeroInvitados(),
 								listaIngreso.obtener(i).getCostoIngreso(),
-								listaIngreso.obtener(i).getEstado()
+								estado
 							};
 			modelo.addRow(fila);
 		}
@@ -281,11 +285,11 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 	}
 	
 	String leerFechaIngreso() {
-		return ""; //aca ira la fecha de ingreso
+		return Fecha.fechaSistema();
 	}
 	
 	String leerHoraIngreso() {
-		return ""; // aca ira la hora del sistema;
+		return Fecha.horaSistema();
 	}
 	
 	int leerNumeroInvitados() {
@@ -296,7 +300,4 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 		return leerNumeroInvitados() * 25;
 	}
 	
-	void resaltar( int pos ) {
-		
-	}
 }
