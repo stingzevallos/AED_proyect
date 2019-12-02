@@ -5,7 +5,7 @@ public class Bungalow {
 	private int codigo, categoria,estado;
 	private double precio;
 	public Bungalow(int codigo, int categoria, int estado, double precio) {
-		
+	
 		this.codigo = codigo;
 		this.categoria = categoria;
 		this.estado = estado;
@@ -35,9 +35,5 @@ public class Bungalow {
 	public void setPrecio(double precio) {
 		this.precio = precio;
 	}
-	 
-	 
-	 
-	
 	
 }

@@ -187,9 +187,11 @@ public class JDialogBungalow extends JDialog implements ActionListener {
 		btnSalir.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnSalir.setBounds(637, 353, 92, 23);
 		getContentPane().add(btnSalir);
+		
+		listar();
 
 	}
-
+	ArregloBungalow ao = new ArregloBungalow();
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    if (e.getSource()== button){
@@ -221,7 +223,8 @@ public class JDialogBungalow extends JDialog implements ActionListener {
 		}
     	
 	}
-	ArregloBungalow ao = new ArregloBungalow();
+
+	
 	private void actionPerformedbutton_4(ActionEvent e) {
 		
 		
@@ -245,7 +248,7 @@ public class JDialogBungalow extends JDialog implements ActionListener {
 				int categoria = leerCategoria();
 				Bungalow nuevo = new Bungalow(codigo, categoria, estado,precio );
 				ao.adicionar(nuevo);
-				
+				ao.grabarBungalow();
 				listar();
 				limpieza();
 
@@ -274,7 +277,7 @@ public class JDialogBungalow extends JDialog implements ActionListener {
 					          };
 					          
 			modelo.addRow(fila);
-			
+		
 		}
 	}
 	//  Métodos tipo void (con parámetros)

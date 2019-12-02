@@ -42,6 +42,7 @@ public class JDialogProducto extends JDialog implements ActionListener {
 	 */
 	 ArregloProducto ab =  new ArregloProducto();
 	private JTextField txtSDetalle;
+	private JLabel lblCodigo;
 	 
 	public static void main(String[] args) {
 		try {
@@ -59,7 +60,7 @@ public class JDialogProducto extends JDialog implements ActionListener {
 	public JDialogProducto() {
 		setModal(true);
 		setTitle("Mantenimiento | Producto");
-		setBounds(100, 100, 752, 418);
+		setBounds(100, 100, 768, 431);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -150,7 +151,7 @@ public class JDialogProducto extends JDialog implements ActionListener {
 			}
 			{
 				txtSDetalle = new JTextField();
-				txtSDetalle.setBounds(112, 69, 176, 73);
+				txtSDetalle.setBounds(112, 69, 161, 54);
 				panel.add(txtSDetalle);
 				txtSDetalle.setColumns(10);
 			}
@@ -165,21 +166,21 @@ public class JDialogProducto extends JDialog implements ActionListener {
 			{
 				txtConsultar = new JTextField();
 				txtConsultar.setColumns(10);
-				txtConsultar.setBounds(10, 13, 126, 20);
+				txtConsultar.setBounds(66, 13, 109, 20);
 				panel.add(txtConsultar);
 			}
 			{
 				button02 = new JButton("Consultar");
 				button02.setFont(new Font("Tahoma", Font.BOLD, 11));
 				button02.addActionListener(this);
-				button02.setBounds(167, 12, 92, 23);
+				button02.setBounds(213, 12, 92, 23);
 				panel.add(button02);
 			}
 			{
 			    button03 = new JButton("Eliminar");
 				button03.setFont(new Font("Tahoma", Font.BOLD, 11));
 				button03.addActionListener(this);
-				button03.setBounds(282, 12, 79, 23);
+				button03.setBounds(315, 12, 79, 23);
 				panel.add(button03);
 			}
 			{
@@ -198,6 +199,11 @@ public class JDialogProducto extends JDialog implements ActionListener {
 					table.setModel(modelo);
 				}
 			}
+			
+			lblCodigo = new JLabel("Codigo");
+			lblCodigo.setFont(new Font("Tahoma", Font.BOLD, 13));
+			lblCodigo.setBounds(10, 16, 46, 14);
+			panel.add(lblCodigo);
 		}
 		{
 			JLabel lblListadoDeProductos = new JLabel("Listado de productos");
@@ -210,7 +216,9 @@ public class JDialogProducto extends JDialog implements ActionListener {
 			button.setFont(new Font("Tahoma", Font.BOLD, 11));
 			button.setBounds(630, 345, 92, 23);
 			contentPanel.add(button);
+			listar();
 		}
+		
 	}
 	void limpieza() {
 		txtCodproducto.setText("");
@@ -219,41 +227,8 @@ public class JDialogProducto extends JDialog implements ActionListener {
 		txtStock.setText("");
 		txtCodproducto.requestFocus();
 	}	
-   	void listar() {
-		modelo.setRowCount(0);
-		for (int i=0; i<ab.tamaño(); i++) {
-			Object[] fila = { ab.obtener(i).getCodigo(),
-					          ab.obtener(i).getDetalle(),
-					          ab.obtener(i).getPrecio(),
-					          ab.obtener(i).getStok(),};
-					          
-			modelo.addRow(fila);
-			
-		}
-	}
-	//  Métodos tipo void (con parámetros)
-	void mensaje(String s) {
-		JOptionPane.showMessageDialog(this, s);
-	}
-	void error(String s, JTextField txt) {
-		mensaje(s);
-		txt.setText("");
-		txt.requestFocus();
-	}
-	//  Métodos que retornan valor (sin parámetros)
-	int leerCodigo() {
-		return Integer.parseInt(txtCodproducto.getText().trim());
-	}
-	String leerNombre() {
-		return txtSDetalle.getText().trim();
-	}
-	double leerPrecio() {
-		return Integer.parseInt(txtPrecio.getText().trim());
-	}
-	int leerNota2() {
-		return Integer.parseInt(txtStock.getText().trim());
-	}
-
+   	
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if ( e.getSource()== button){
@@ -367,7 +342,7 @@ public class JDialogProducto extends JDialog implements ActionListener {
 							int stock = leerNota2();
 							Producto nuevo = new Producto(codigo, stock, descripcion,precio );
 							ab.adicionar(nuevo);
-							
+							ab.grabarProducto();
 							listar();
 							limpieza();
 
@@ -390,5 +365,40 @@ public class JDialogProducto extends JDialog implements ActionListener {
 			error("ingrese CÓDIGO", txtCodproducto);
 		}
 		
+	}
+	
+	void listar() {
+		modelo.setRowCount(0);
+		for (int i=0; i<ab.tamaño(); i++) {
+			Object[] fila = { ab.obtener(i).getCodigo(),
+					          ab.obtener(i).getDetalle(),
+					          ab.obtener(i).getPrecio(),
+					          ab.obtener(i).getStok(),};
+					          
+			modelo.addRow(fila);
+			
+		}
+	}
+//  Métodos tipo void (con parámetros)
+	void mensaje(String s) {
+		JOptionPane.showMessageDialog(this, s);
+	}
+	void error(String s, JTextField txt) {
+		mensaje(s);
+		txt.setText("");
+		txt.requestFocus();
+	}
+	//  Métodos que retornan valor (sin parámetros)
+	int leerCodigo() {
+		return Integer.parseInt(txtCodproducto.getText().trim());
+	}
+	String leerNombre() {
+		return txtSDetalle.getText().trim();
+	}
+	double leerPrecio() {
+		return Integer.parseInt(txtPrecio.getText().trim());
+	}
+	int leerNota2() {
+		return Integer.parseInt(txtStock.getText().trim());
 	}
 }
