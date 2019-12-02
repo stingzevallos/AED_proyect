@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import clases.Producto;
 
 public class ArregloProducto {
-	
+
 	private ArrayList<Producto> pro;
 
 	public ArregloProducto() {
@@ -30,6 +30,8 @@ public class ArregloProducto {
 	public void eliminar(Producto x) {
 		pro.remove(x);
 	}
-	
+	public int GenerarCodigo(){
+		return 20001 + tamaño();
+	}
 	
 }

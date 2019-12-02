@@ -1,6 +1,7 @@
 package clases;
 
 public class Producto {
+	
 	private int codigo, stok;
 	private String detalle;
 	private double precio;
