@@ -1,27 +1,29 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+
 
 import clases.Ingreso;
-import clases.Hospedaje;
-import clases.Producto;
+
 import arreglos.ArregloIngreso;
-import arreglos.ArregloHospedaje;
-import arreglos.ArregloProducto;
+
 import clases.Socio;
+
+import arreglos.ArregloSocio;
+
+
+import arreglos.ArregloConsumos;
+
 
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Color;
 import java.awt.SystemColor;
-import javax.swing.JTextArea;
+import java.util.ArrayList;
+
 import javax.swing.JScrollPane;
 import java.awt.Component;
 import java.awt.Rectangle;
@@ -35,17 +37,33 @@ import java.awt.Panel;
 import java.awt.Label;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ItemListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
+import javax.swing.ImageIcon;
+import java.awt.event.ActionListener;
+import javax.swing.SwingConstants;
 
-public class JDialogIngresosyconsumos extends JDialog {
+public class JDialogIngresosyconsumos extends JDialog implements ActionListener {	
+	private static final long serialVersionUID = 1L;
 	private JTextField txtNombre;
 	private JTextField txtApellidos;
 	private JTextField txtDNI;
-	private JTable tableConsumo;
-	private JComboBox cboCodigo; 
-	private JTextField txtPago;
+	private JComboBox<String> cboCodigo; 
+	private JTextField txtPagoTotal;
 	private JTextField txtEstado;
 	private DefaultTableModel model;
+	private JTextField txtPagoIngreso;
+	private JTextField txtFecha;
+	private JButton btnPagar;
+	private JButton btnSalir;
+	private JTable tableConsumo;
+	private JScrollPane scrollPane;
+	private JButton btnConsultarDatos;
 	
+	ArregloIngreso ai = new ArregloIngreso();
+	ArregloSocio as = new ArregloSocio();
+	ArregloConsumos ac;
 
 	/**
 	 * Launch the application.
@@ -67,29 +85,33 @@ public class JDialogIngresosyconsumos extends JDialog {
 		getContentPane().setBackground(SystemColor.scrollbar);
 		setBackground(Color.ORANGE);
 		setTitle("Pago | Ingresos y Consumos");
-		setBounds(100, 100, 498, 330);
+		setBounds(100, 100, 606, 330);
 		getContentPane().setLayout(null);
 		{
 			JPanel panel_1 = new JPanel();
 			panel_1.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 			panel_1.setLayout(null);
 			panel_1.setBackground(Color.WHITE);
-			panel_1.setBounds(10, 11, 466, 114);
+			panel_1.setBounds(10, 11, 570, 114);
 			getContentPane().add(panel_1);
 			{
-				JButton btnConsultarDatos = new JButton("Consultar");
+				btnConsultarDatos = new JButton("");
+				btnConsultarDatos.addActionListener(this);
+				btnConsultarDatos.setIcon(new ImageIcon("C:\\Users\\HP\\Desktop\\buscar.jpg"));
 				btnConsultarDatos.setFont(new Font("Tahoma", Font.BOLD, 11));
-				btnConsultarDatos.setBounds(225, 11, 97, 23);
+				btnConsultarDatos.setBounds(241, 11, 32, 23);
 				panel_1.add(btnConsultarDatos);
 			}
 			{
 				JLabel lblCdigo = new JLabel("C\u00F3digo de ingreso:");
-				lblCdigo.setBounds(10, 15, 99, 14);
+				lblCdigo.setBounds(10, 15, 110, 14);
 				panel_1.add(lblCdigo);
 			}
 			
-			cboCodigo = new JComboBox();
-			cboCodigo.setBounds(119, 12, 86, 20);
+			cboCodigo = new JComboBox<String>();
+			cargarCombo();
+			cboCodigo.addActionListener(this);
+			cboCodigo.setBounds(119, 12, 112, 20);
 			panel_1.add(cboCodigo);
 			
 			JLabel lblNewLabel = new JLabel("Nombre de cliente:");
@@ -111,117 +133,100 @@ public class JDialogIngresosyconsumos extends JDialog {
 			txtApellidos.setColumns(10);
 			
 			JLabel dni = new JLabel("DNI:");
-			dni.setBounds(243, 45, 46, 14);
+			dni.setBounds(376, 49, 46, 14);
 			panel_1.add(dni);
 			
 			txtDNI = new JTextField();
-			txtDNI.setBounds(306, 46, 117, 20);
+			txtDNI.setBounds(443, 46, 117, 20);
 			panel_1.add(txtDNI);
 			txtDNI.setColumns(10);
 			
 			JLabel lblEstado = new JLabel("Estado:");
-			lblEstado.setBounds(241, 80, 46, 14);
+			lblEstado.setBounds(376, 80, 46, 14);
 			panel_1.add(lblEstado);
 			
 			txtEstado = new JTextField();
-			txtEstado.setBounds(306, 77, 117, 20);
+			txtEstado.setBounds(443, 77, 117, 20);
 			panel_1.add(txtEstado);
 			txtEstado.setColumns(10);
+			
+			JLabel lblNewLabel_1 = new JLabel("Fecha de ingreso:");
+			lblNewLabel_1.setBounds(294, 17, 100, 14);
+			panel_1.add(lblNewLabel_1);
+			
+			txtFecha = new JTextField();
+			txtFecha.setBounds(398, 14, 162, 20);
+			panel_1.add(txtFecha);
+			txtFecha.setColumns(10);
 		}
 		
-		JButton btnPagar = new JButton("Pagar");
+		btnPagar = new JButton("Pagar");
+		btnPagar.addActionListener(this);
 		btnPagar.setBackground(Color.RED);
-		btnPagar.setBounds(284, 249, 89, 23);
+		btnPagar.setBounds(371, 263, 89, 23);
 		getContentPane().add(btnPagar);
 		
-		JButton btnSalir = new JButton("Salir");
+		btnSalir = new JButton("Salir");
+		btnSalir.addActionListener(this);
 		btnSalir.setBackground(Color.RED);
-		btnSalir.setBounds(387, 249, 89, 23);
+		btnSalir.setBounds(491, 263, 89, 23);
 		getContentPane().add(btnSalir);
-		{
-			Panel panel = new Panel();
-			panel.setBackground(Color.WHITE);
-			panel.setBounds(10, 249, 219, 32);
-			getContentPane().add(panel);
-			
-			JLabel lblTotalAPagar = new JLabel("Total a pagar:");
-			panel.add(lblTotalAPagar);
-			
-			txtPago = new JTextField();
-			panel.add(txtPago);
-			txtPago.setColumns(10);
-		}
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 136, 466, 98);
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 136, 570, 77);
 		getContentPane().add(scrollPane);
 		
 		tableConsumo = new JTable();
 		tableConsumo.setFillsViewportHeight(true);
 		scrollPane.setViewportView(tableConsumo);
+		
+		txtPagoIngreso = new JTextField();
+		txtPagoIngreso.setBounds(122, 224, 86, 20);
+		getContentPane().add(txtPagoIngreso);
+		txtPagoIngreso.setColumns(10);
+		
+		JLabel lblIngreso = new JLabel("Total por ingresos:");
+		lblIngreso.setBounds(10, 227, 112, 14);
+		getContentPane().add(lblIngreso);
+		
+		JLabel lblTotalAPagar = new JLabel("Total a pagar:");
+		lblTotalAPagar.setBounds(371, 227, 102, 14);
+		getContentPane().add(lblTotalAPagar);
+		
+		txtPagoTotal = new JTextField();
+		txtPagoTotal.setBounds(494, 224, 86, 20);
+		getContentPane().add(txtPagoTotal);
+		txtPagoTotal.setColumns(10);
 	}
 	
-	private void inicializar(){
-		txtDNI.setText("");
-		txtNombre.setText("");
-		txtApellidos.setText("");
-		txtEstado.setText("");
-		txtPago.setText("00.00");
-		cboCodigo.removeAllItems();			
-		tableConsumo.setModel(model);
-		ArregloIngreso ai= new ArregloIngreso("00000");
-				model = ai.("00000");
-				
-					
-		
-		
-				
-				
-				
+	private void cargarCombo() {
+		cboCodigo.removeAllItems();
+		for ( int i=0; i<ai.tamaño(); i++ ) {
+			if ( ai.obtener(i).getEstado() == 0 ) 
+				cboCodigo.addItem( String.valueOf(ai.obtener(i).getCodigoIngreso() ) );
+		}
+	}
 
-		
-		
+	int leerCodigoIngreso() {
+		return Integer.parseInt( cboCodigo.getSelectedItem().toString().trim() );
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	private void calcular(){
-		int codIn = Integer.parseInt((String) cboCodigo.getSelectedItem());
-		
-		Ingreso in = new ArregloIngreso().buscar(codIn);	
-		ArregloIngreso ai = new ArregloIngreso();
-		txtDNI.setText(codSo.getDni());
-		txtNombre.setText(codSo.getNombres());
-		
-		txtEstado.setText(in.getEstado());
-		txtPago.setText(String.valueOf(in.getTotalPagar()));
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if ( e.getSource() == btnConsultarDatos )
+			actionPerformedBtnConsultarDatos(e);
 	}
-	
-	
-	
-	
-	
-	
+
+	private void actionPerformedBtnConsultarDatos(ActionEvent e) {
+		int codigoIngreso = leerCodigoIngreso();
+		int codigoSocio = ai.buscar(codigoIngreso).getCodigoSocio();
+		
+		Socio socio = as.buscar(codigoSocio);
+		txtNombre.setText( socio.getNombre());
+		txtApellidos.setText( socio.getApellidos());
+		txtDNI.setText( socio.getDni());
+		txtFecha.setText( ai.buscar(codigoIngreso).getFechaIngreso().toString() );
+		txtEstado.setText( String.valueOf( ai.buscar(codigoIngreso).getEstado()) );
+	}
 }
+

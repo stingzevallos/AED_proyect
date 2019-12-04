@@ -15,15 +15,31 @@ import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import java.awt.Color;
+<<<<<<< HEAD
+=======
+import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
+
+import clases.Producto;
+import clases.Socio;
+
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+>>>>>>> branch 'master' of https://github.com/stingzevallos/AED_proyect.git
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import librerias.Resaltador;
 
+<<<<<<< HEAD
 import javax.swing.JTable;
 public class JDialogSocio extends JDialog implements ActionListener {
 
+=======
+public class JDialogSocio extends JDialog implements ActionListener, KeyListener{
+	Socio pa = new Socio();
+>>>>>>> branch 'master' of https://github.com/stingzevallos/AED_proyect.git
 	/**
 	 * 
 	 */
@@ -268,9 +284,49 @@ public class JDialogSocio extends JDialog implements ActionListener {
 		
 	}
 
+<<<<<<< HEAD
 	private void actionPerformedButtonSalir(ActionEvent e) {
 		dispose();
 	}
+=======
+	@Override
+	public void actionPerformed(ActionEvent ev) {
+		
+		/*para accder a todos los Socios----metodo arraylist*/
+		Socio pa = new Socio();
+		
+		if(ev.getSource()==btnGuardar) {
+			int codSocio = Lectura.leerEntero(txtCodSocio);
+			String nombre = Lectura.leerCadena(txtNombres);
+			String apellidos = Lectura.leerCadena(txtApellidos);
+			String dni = Lectura.leerCadena(txtDni);
+			int telefono = Lectura.leerEntero(txtTelefono);
+			int sexo = Lectura.leerCbo(cboSexo);
+			if(ev.getActionCommand()=="Guardar") {				
+					if(!nombre.isEmpty() || !apellidos.isEmpty() || !dni.isEmpty()) {
+						pa.agregarSocio(new Socio(codSocio,nombre,apellidos,dni, telefono,sexo));
+						inicialize();
+						habilitar(false);
+						actualizarTabla();
+						Validacion.mensajeInformacion(this, "Socio ingresado correctamente");
+					}
+					else {
+						Validacion.mensajeError(this, "Debe ingresar todo los campos solicitados");
+					}
+			}
+			else if(ev.getActionCommand()=="Actualizar") {
+				if(!nombre.isEmpty() || !apellidos.isEmpty() || !dni.isEmpty()) {
+					pa.modificar(new Socio(codSocio,nombre,apellidos,dni, telefono,sexo), codSocio);
+					inicialize();
+					habilitar(false);
+					actualizarTabla();
+					Validacion.mensajeInformacion(this, "Datos del socio con codigo"+"\n "+codSocio + " fueron actualizados.");
+				}
+				else {
+					Validacion.mensajeError(this, "Ingresa todo los campos solicitados");
+				}
+			}
+>>>>>>> branch 'master' of https://github.com/stingzevallos/AED_proyect.git
 
 	private void actionPerformedButtonEliminar(ActionEvent eo) {
 		resaltado.setFila(-1);
@@ -312,9 +368,41 @@ public class JDialogSocio extends JDialog implements ActionListener {
 			}
 			txtCodproducto.setText(String.valueOf(ab.generarCodigo()));
 		}
+<<<<<<< HEAD
 		catch (Exception e) {
 			mensaje("ingrese CÓDIGO");
 			limpieza();
+=======
+		
+		else if(ev.getSource()==txtBuscar) {
+			System.out.println("Evento en el cuadro");
+		}
+	}
+	
+	
+	private void mouseClickedTableListado(MouseEvent ev) {
+		int row = tableListado.getSelectedRow();		
+		txtCodSocio.setText((String) modelo.getValueAt(row, 0));
+		txtNombres.setText((String) modelo.getValueAt(row, 1));
+		txtApellidos.setText((String) modelo.getValueAt(row, 2));
+		txtDni.setText((String) modelo.getValueAt(row, 3));
+		txtTelefono.setText((String) modelo.getValueAt(row, 4));
+		String indSexo = (String) modelo.getValueAt(row, 5);
+		if(indSexo.equals("Femenino")) cboSexo.setSelectedIndex(1);
+		else cboSexo.setSelectedIndex(0);		
+		habilitar(true);
+		btnGuardar.setText("Actualizar");	
+		
+	}
+	
+
+
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		if(arg0.getSource()==txtBuscar) {
+			actualizarTabla();
+>>>>>>> branch 'master' of https://github.com/stingzevallos/AED_proyect.git
 		}
 	}
 

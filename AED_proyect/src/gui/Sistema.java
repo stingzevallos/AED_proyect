@@ -25,6 +25,12 @@ public class Sistema extends JFrame implements ActionListener {
 	private JMenuItem mntmSocio;
 	private JMenuItem mntmProducto;
 	private JMenuItem mntmBungalow;
+	private JMenuItem mntmIngresosYConsumos;
+	private JMenuItem mntmHospedajes;
+	private JMenuItem mntmIngresosYConsumos_1;
+	private JMenuItem mntmIngresosYConsumos_2;
+	private JMenuItem mntmHospedajesPendientes;
+	private JMenuItem mntmHospedajesPagados;
 
 	/**
 	 * Launch the application.
@@ -88,8 +94,32 @@ public class Sistema extends JFrame implements ActionListener {
 		JMenu mnPago = new JMenu("Pago");
 		menuBar.add(mnPago);
 		
+		mntmIngresosYConsumos = new JMenuItem("Ingresos y consumos");
+		mntmIngresosYConsumos.addActionListener(this);
+		mnPago.add(mntmIngresosYConsumos);
+		
+		mntmHospedajes = new JMenuItem("Hospedajes");
+		mntmHospedajes.addActionListener(this);
+		mnPago.add(mntmHospedajes);
+		
 		JMenu mnReporte = new JMenu("Reporte");
 		menuBar.add(mnReporte);
+		
+		mntmIngresosYConsumos_1 = new JMenuItem("Ingresos y consumos pendientes");
+		mntmIngresosYConsumos_1.addActionListener(this);
+		mnReporte.add(mntmIngresosYConsumos_1);
+		
+		mntmIngresosYConsumos_2 = new JMenuItem("Ingresos y consumos pagados");
+		mntmIngresosYConsumos_2.addActionListener(this);
+		mnReporte.add(mntmIngresosYConsumos_2);
+		
+		mntmHospedajesPendientes = new JMenuItem("Hospedajes pendientes");
+		mntmHospedajesPendientes.addActionListener(this);
+		mnReporte.add(mntmHospedajesPendientes);
+		
+		mntmHospedajesPagados = new JMenuItem("Hospedajes pagados");
+		mntmHospedajesPagados.addActionListener(this);
+		mnReporte.add(mntmHospedajesPagados);
 		
 		JMenu mnBoleta = new JMenu("Boleta");
 		menuBar.add(mnBoleta);
@@ -97,6 +127,8 @@ public class Sistema extends JFrame implements ActionListener {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
+		
+		
 	}
 
 	@Override
@@ -113,7 +145,49 @@ public class Sistema extends JFrame implements ActionListener {
 			actionPerformedMntmProducto(e);
 		else if ( e.getSource() == mntmBungalow )
 			actionPerformedMntmBungalow(e);
+		else if ( e.getSource() == mntmIngresosYConsumos )
+			actionPerformedMntmIngresosYConsumos(e);
+		else if ( e.getSource() == mntmHospedajes )
+			actionPerformedmntmHospedajes(e);
+		else if ( e.getSource() == mntmIngresosYConsumos_1 )
+			actionPerformedmntmIngresosYConsumos_1(e);
+		else if ( e.getSource() == mntmIngresosYConsumos_2 )
+			actionPerformedmntmIngresosYConsumos_2(e);
+		else if ( e.getSource() == mntmHospedajesPendientes )
+			actionPerformedmntmHospedajesPendientes(e);
+		else if ( e.getSource() == mntmHospedajesPagados )
+			actionPerformedmntmHospedajesPagados(e);
 		
+	}
+
+	private void actionPerformedmntmHospedajesPagados(ActionEvent e) {
+		DlgHospedajesPagados dlgHPa = new DlgHospedajesPagados();
+		dlgHPa.setVisible(true);
+	}
+
+	private void actionPerformedmntmHospedajesPendientes(ActionEvent e) {
+		DlgHospedajesPendientes dlgHP = new DlgHospedajesPendientes();
+		dlgHP.setVisible(true);
+	}
+
+	private void actionPerformedmntmIngresosYConsumos_2(ActionEvent e) {
+		DlgIngresosyConsumosPagados dlgICPa = new DlgIngresosyConsumosPagados();
+		dlgICPa.setVisible(true);
+	}
+
+	private void actionPerformedmntmIngresosYConsumos_1(ActionEvent e) {
+		DlgIngresosyConsumosPendientes dlgICPe = new DlgIngresosyConsumosPendientes();
+		dlgICPe.setVisible(true);
+	}
+
+	private void actionPerformedmntmHospedajes(ActionEvent e) {
+		JDialogHospedajes viewHospedajes = new JDialogHospedajes();
+		viewHospedajes.setVisible(true);
+	}
+
+	private void actionPerformedMntmIngresosYConsumos(ActionEvent e) {
+		JDialogIngresosyconsumos viewIngresos = new JDialogIngresosyconsumos();
+		viewIngresos.setVisible(true);
 	}
 
 	private void actionPerformedMntmBungalow(ActionEvent e) {

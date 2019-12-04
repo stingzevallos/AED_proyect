@@ -37,7 +37,7 @@ public class ArregloIngreso {
 	}
 	
 	public Ingreso buscar( int codigo ) {
-		for ( int i=tamaño()-1; i>=0; i++ )
+		for ( int i=tamaño()-1; i>=0; i-- )
 			if ( obtener(i).getCodigoIngreso() == codigo)
 				return obtener(i);
 		return null;

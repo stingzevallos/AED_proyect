@@ -85,6 +85,17 @@ public class JDialogConsumo extends JDialog implements ActionListener {
 		buttonAgregar = new JButton("Agregar");
 		buttonAgregar.setBounds(445, 11, 89, 23);
 		buttonAgregar.addActionListener(this);
+		
+		comboBoxCodigoSocio = new JComboBox<String>();
+		comboBoxCodigoSocio.setBounds(96, 12, 62, 20);
+		comboBoxCodigoSocio.addActionListener(this);
+		
+		textFieldSocio = new JTextField();
+		textFieldSocio.setEditable(false);
+		textFieldSocio.setBounds(168, 12, 168, 20);
+		getContentPane().add(textFieldSocio);
+		textFieldSocio.setColumns(10);
+		getContentPane().add(comboBoxCodigoSocio);
 		getContentPane().add(buttonAgregar);
 		
 		btnQuitar = new JButton("Quitar");
@@ -95,19 +106,7 @@ public class JDialogConsumo extends JDialog implements ActionListener {
 		lblCodigoSocio = new JLabel("Codigo Socio");
 		lblCodigoSocio.setBounds(10, 15, 76, 14);
 		getContentPane().add(lblCodigoSocio);
-		
-		comboBoxCodigoSocio = new JComboBox<String>();
-		comboBoxCodigoSocio.setBounds(96, 12, 62, 20);
-		comboBoxCodigoSocio.addActionListener(this);
-		getContentPane().add(comboBoxCodigoSocio);
 		generarSociosPendientes();
-		
-		textFieldSocio = new JTextField();
-		textFieldSocio.setEditable(false);
-		textFieldSocio.setEnabled(false);
-		textFieldSocio.setBounds(168, 12, 168, 20);
-		getContentPane().add(textFieldSocio);
-		textFieldSocio.setColumns(10);
 		
 		lblProducto = new JLabel("Producto");
 		lblProducto.setBounds(10, 40, 76, 14);
@@ -189,7 +188,7 @@ public class JDialogConsumo extends JDialog implements ActionListener {
 
 	private void actionPerfomedComboBoxCodigoSocio(ActionEvent e) {
 		int codigoSocio = leerCodigoSocio();
-		String nombreCompleto = as.buscarPorCod(codigoSocio).getNombres() + " " + as.buscarPorCod(codigoSocio).getApellidos();
+		String nombreCompleto = as.buscar(codigoSocio).getNombre() + " " + as.buscar(codigoSocio).getApellidos();
 		textFieldSocio.setText( nombreCompleto);
 	}
 
@@ -221,7 +220,7 @@ public class JDialogConsumo extends JDialog implements ActionListener {
 		ac.agregarProductos( new Consumo( codigoProducto, detalle, precio, cantidad) );
 		ac.grabarConsumos();
 		
-		labelSocio.setText( as.buscarPorCod(codigoSocio).getNombres() + " " + as.buscarPorCod(codigoSocio).getApellidos() );
+		labelSocio.setText( as.buscar(codigoSocio).getNombre() + " " + as.buscar(codigoSocio).getApellidos() );
 		listar();
 		limpieza();
 		

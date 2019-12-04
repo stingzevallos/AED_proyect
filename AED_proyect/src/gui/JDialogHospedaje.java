@@ -7,9 +7,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import arreglos.ArregloBungalow;
 import arreglos.ArregloHospedaje;
 import arreglos.ArregloIngreso;
 import clases.Hospedaje;
+import librerias.Fecha;
 import librerias.Resaltador;
 
 import javax.swing.JComboBox;
@@ -25,6 +27,7 @@ public class JDialogHospedaje extends JDialog implements ActionListener {
 	
 	ArregloHospedaje listaHospedaje = new ArregloHospedaje();
 	ArregloIngreso listaIngreso = new ArregloIngreso();
+	ArregloBungalow listaBungalow = new ArregloBungalow();
 	/**
 	 * 
 	 */
@@ -142,7 +145,7 @@ public class JDialogHospedaje extends JDialog implements ActionListener {
 		getContentPane().add(lblListadoDeHospedajes);
 		
 		comboBoxBuscar = new JComboBox<String>();
-		comboBoxBuscar.setModel(new DefaultComboBoxModel<String>(new String[] {"Codigo", "DNI"}));
+		comboBoxBuscar.setModel(new DefaultComboBoxModel(new String[] {"Codigo"}));
 		comboBoxBuscar.setBounds(10, 147, 81, 20);
 		getContentPane().add(comboBoxBuscar);
 		
@@ -198,13 +201,16 @@ public class JDialogHospedaje extends JDialog implements ActionListener {
 			int numeroBungalow = leerNumeroBungalow();
 			String fechaSalida = leerFechaSalida();
 			String horaSalida = leerHoraSalida();
-			double costoHospedaje = 0;
+			double costoHospedaje = listaBungalow.buscar(numeroBungalow).getPrecio();
 			int estado = 0;
 			
 			nuevoHospedaje = new Hospedaje( codigoHospedaje, codigoIngreso, numeroBungalow, fechaSalida, horaSalida, costoHospedaje, estado );
 			listaHospedaje.adicionar(nuevoHospedaje);
 			listaHospedaje.grabarHospedajes();
 			listar();
+			
+			listaBungalow.buscar(numeroBungalow).setEstado(1);
+			generarBungalowLibres();
 			
 		}
 		else
@@ -221,6 +227,7 @@ public class JDialogHospedaje extends JDialog implements ActionListener {
 				if ( pos != -1 ) {
 					resaltado.setFila(pos);
 					listar();
+					generarBungalowLibres();
 				}
 				else
 					error("No se encontro el CODIGO", textFieldBuscar);
@@ -235,8 +242,12 @@ public class JDialogHospedaje extends JDialog implements ActionListener {
 		try {
 			int codigo = Integer.parseInt( textFieldBuscar.getText().trim());
 			Hospedaje hospedaje = listaHospedaje.buscar(codigo);
-			if ( hospedaje != null )
+			if ( hospedaje != null ) {
 				listaHospedaje.eliminar( hospedaje);
+				int numeroBungalow = hospedaje.getNumeroBungalow();
+				listaBungalow.buscar(numeroBungalow).setEstado(0);
+				generarBungalowLibres();
+			}
 			else
 				error("No se encuentra registrado el hospedaje.", textFieldBuscar);
 		}
@@ -288,11 +299,11 @@ public class JDialogHospedaje extends JDialog implements ActionListener {
 	}
 	
 	String leerFechaSalida() {
-		return ""; // aca ira la hora del sistema;
+		return Fecha.fechaSistema(); // aca ira la hora del sistema;
 	}
 	
 	String leerHoraSalida() {
-		return "";
+		return Fecha.horaSistema();
 	}
 	
 	int leerCostoHospedaje() {
@@ -306,12 +317,12 @@ public class JDialogHospedaje extends JDialog implements ActionListener {
 	}
 	
 	void generarBungalowLibres() {
-		// Aca ira codigo de bungalow
-		comboBoxBungalow.addItem("30001");
-		comboBoxBungalow.addItem("30002");
-		comboBoxBungalow.addItem("30003");
-		// ...
-		if ( comboBoxBungalow.getSelectedItem().toString().isEmpty() )
+		comboBoxBungalow.removeAllItems();
+		for ( int i=0; i<listaBungalow.tamaño(); i++ ) {
+			if ( listaBungalow.obtener(i).getEstado() == 0 )
+				comboBoxBungalow.addItem( String.valueOf(listaBungalow.obtener(i).getCodigo()));
+		}
+		if ( comboBoxBungalow.getItemCount() == 0 )
 			btnHospedar.setEnabled(false);
 		else
 			btnHospedar.setEnabled(true);

@@ -60,7 +60,7 @@ public class ArregloHospedaje {
 			PrintWriter pw;
 			String linea;
 			
-			pw = new PrintWriter( new FileWriter("ingreso.txt"));
+			pw = new PrintWriter( new FileWriter("hospedaje.txt"));
 			for( int i=0; i<tamaño(); i++ ) {
 				linea = obtener(i).getCodigoHospedaje() + ";" + 
 						obtener(i).getCodigoIngreso() + ";" + 
@@ -86,7 +86,7 @@ public class ArregloHospedaje {
 			double costoHospedaje;
 			String[] s;
 			
-			br = new BufferedReader( new FileReader("ingreso.txt"));
+			br = new BufferedReader( new FileReader("hospedaje.txt"));
 			linea = br.readLine();
 			while( linea != null ) {
 				s = linea.split(";");

@@ -96,9 +96,9 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 		textFieldCodigoIngreso.setColumns(10);
 		
 		comboBoxCodigoSocio = new JComboBox<String>();
-		comboBoxCodigoSocio.setModel(new DefaultComboBoxModel<String>(new String[] {"10001", "10002", "10003"}));
 		comboBoxCodigoSocio.setBounds(135, 58, 82, 20);
 		getContentPane().add(comboBoxCodigoSocio);
+		cargarSocios();
 		
 		textFieldNumInvitados = new JTextField();
 		textFieldNumInvitados.setBounds(135, 83, 46, 20);
@@ -290,6 +290,7 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 	}
 	
 	void cargarSocios() {
+		comboBoxCodigoSocio.removeAllItems();
 		for ( int i=0; i<listaSocio.tamaño(); i++ )
 			comboBoxCodigoSocio.addItem( String.valueOf(listaSocio.obtener(i).getCodigo()) );
 	}

@@ -1,9 +1,36 @@
 package arreglos;
+<<<<<<< HEAD
+=======
+
+import java.util.ArrayList;
+
+import clases.Producto;
+import clases.Socio;
+
+>>>>>>> branch 'master' of https://github.com/stingzevallos/AED_proyect.git
 import java.io.*;
 import java.util.ArrayList;
 import clases.Socio;
 
 public class ArregloSocio {
+<<<<<<< HEAD
+=======
+	public static void main(String[] args) {
+		
+		ArregloSocio d = new ArregloSocio();
+		ArrayList <Socio> al = d.leerArchivo();
+		
+		System.out.println(al);
+		System.out.println(al.size());
+		System.out.println(al.get(0).getcodSocio());
+		System.out.println(al.get(0).getDni());
+		System.out.println(al.get(0).getNombres());
+		System.out.println(al.get(0).getApellidos());
+		System.out.println(al.get(0).getTelefono());
+	}
+	
+	
+>>>>>>> branch 'master' of https://github.com/stingzevallos/AED_proyect.git
 
 	private ArrayList<Socio> pro;
 

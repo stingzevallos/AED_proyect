@@ -8,10 +8,17 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import clases.Hospedaje;
 import clases.Socio;
+import clases.Bungalow;
+import clases.Ingreso;
+import librerias.Fecha;
 import arreglos.ArregloHospedaje;
 import arreglos.ArregloProducto;
+import arreglos.ArregloBungalow;
+import arreglos.ArregloSocio;
+import arreglos.ArregloIngreso;
 import java.awt.SystemColor;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.border.BevelBorder;
 import javax.swing.JTextField;
 import java.awt.Font;
@@ -22,10 +29,14 @@ import java.awt.Button;
 import java.awt.Panel;
 import java.awt.ScrollPane;
 import javax.swing.JComboBox;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ItemListener;
 
 public class JDialogHospedajes extends JDialog {
 	private JTextField txtCodigo;
-	private JTextField txtCli;
+	private JTextField txtNom;
 	private JTextField txtApe;
 	private JTextField txtFecha;
 	private JTextField txtCategoria;
@@ -33,7 +44,13 @@ public class JDialogHospedajes extends JDialog {
 	private JTextField txtTotaldias;
 	private JTextField txtNumero;
 	private JTextField txtTotalPagar;
-	private JComboBox cboHospedaje;
+	private JComboBox<String> cboHospedaje;
+	private JButton btnPagar;
+	private ArregloHospedaje hospe;
+	private boolean Pagar = false;
+	private JButton btnSalir;
+	private ArregloIngreso ai;
+	private JTextField txtEstado;
 
 	/**
 	 * Launch the application.
@@ -77,7 +94,13 @@ public class JDialogHospedajes extends JDialog {
 		lblFecha.setBounds(295, 43, 130, 14);
 		panel.add(lblFecha);
 		
-		cboHospedaje = new JComboBox();
+		cboHospedaje = new JComboBox<String>();
+		cboHospedaje.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				itemStateChangedCboHospedaje(e);	
+			}
+		});
+	
 		cboHospedaje.setBounds(132, 12, 138, 20);
 		panel.add(cboHospedaje);
 		
@@ -98,10 +121,10 @@ public class JDialogHospedajes extends JDialog {
 		panel.add(txtCodigo);
 		txtCodigo.setColumns(10);
 		
-		txtCli = new JTextField();
-		txtCli.setBounds(132, 65, 138, 20);
-		panel.add(txtCli);
-		txtCli.setColumns(10);
+		txtNom = new JTextField();
+		txtNom.setBounds(132, 65, 138, 20);
+		panel.add(txtNom);
+		txtNom.setColumns(10);
 		
 		txtApe = new JTextField();
 		txtApe.setBounds(132, 89, 138, 20);
@@ -113,12 +136,21 @@ public class JDialogHospedajes extends JDialog {
 		panel.add(txtFecha);
 		txtFecha.setColumns(10);
 		
-		JButton btnPagar = new JButton("Pagar");
+		JLabel lblEstado = new JLabel("Estado:");
+		lblEstado.setBounds(407, 15, 46, 14);
+		panel.add(lblEstado);
+		
+		txtEstado = new JTextField();
+		txtEstado.setBounds(463, 12, 86, 20);
+		panel.add(txtEstado);
+		txtEstado.setColumns(10);
+		
+		btnPagar = new JButton("Pagar");
 		btnPagar.setBackground(Color.RED);
 		btnPagar.setBounds(370, 247, 89, 23);
 		getContentPane().add(btnPagar);
 		
-		JButton btnSalir = new JButton("Salir");
+		btnSalir = new JButton("Salir");
 		btnSalir.setBackground(Color.RED);
 		btnSalir.setBounds(504, 247, 89, 23);
 		getContentPane().add(btnSalir);
@@ -179,24 +211,98 @@ public class JDialogHospedajes extends JDialog {
 	}
 	
 	
-	private void cargarCbo() {
-		hospe = new ArregloHospedaje();
-		ArrayList<ArregloHospedaje> li = hospe.hospedajespendientes();
-		cboHospedaje.addItem("Seleccione");
-		
-		
-		
-		private void inicializar() {
+	protected void itemStateChangedCboHospedaje(ItemEvent e) {
+		if(e.getStateChange()==ItemEvent.SELECTED && cboHospedaje.getSelectedIndex()!=0) {
+			hospe = new ArregloHospedaje();
+			int codigoH = (int) cboHospedaje.getSelectedItem();		
+			Hospedaje ho = hospe.buscar(codigoH);
+			ai = new ArregloIngreso();
+			int codIn = ho.getCodigoIngreso();
+			int codbun = ho.getNumeroBungalow();					
+			int codSoc = ai.buscar(codIn).getCodigoSocio();
+			Bungalow bungalow = new ArregloBungalow().buscar(codbun);
+			Socio so=new Socio().buscarPorCod(codSoc);
+			txtNom.setText(so.getNombres());
+			txtApe.setText(so.getApellidos());
+			txtNumero.setText(String.valueOf(codbun));
+			txtCategoria.setText(bungalow.getCategoria());
+			txtPrecio.setText(String.valueOf(bungalow.getPrecio()));
+			txtEstado.setText(ho.getEstadoS());
+		    txtFecha.setText(ho.getFechaIngreso()+ " "+ ho.getHoraIngreso());
+		    txtCodigo.setText(String.valueOf(codSoc));
+		    Date fInicio = Fecha.construirFecha(ho.getFechaIngreso().trim());
+		    int dInter = Fecha.calcularDiasHoy(fInicio);
+		    txtTotaldias.setText(dInter + " Dias");
+		    txtTotalPagar.setText(String.valueOf(dInter*bungalow.getPrecio()));
+		    Pagar = true;
+			btnPagar.setEnabled(true);
 			
+		
+		}			
+		
+		
+	}
+
+
+	private void cargarCombo() {
+		hospe = new ArregloHospedaje();
+		ArrayList<Hospedaje> li = hospe.hospedajesPendientes();
+		cboHospedaje.addItem("Seleccione");
+		for(Hospedaje ho : li) {
+			String item = String.valueOf(ho.getCodigoHospedaje());
+			cboHospedaje.addItem(item);
+		}
+		
+		
+	}
+		private void limpieza(boolean bt) {
+			
+			cboHospedaje.removeAllItems();
+			cboHospedaje.setSelectedIndex(0);
+			txtCodigo.setText("");
+			txtNom.setText("");
+			txtApe.setText("");
+			txtFecha.setText("");
+			txtNumero.setText("");
+			txtCategoria.setText("");
+			txtPrecio.setText("");
+			txtTotaldias.setText("");
+			txtTotalPagar.setText("");
+			btnPagar.setEnabled(bt);
+		}
+		
+		
+		public void actionPerformed(ActionEvent evt) {
+			if(evt.getSource()==btnPagar && Pagar) {
+				
+				int nbungalow = leerEntero(txtNumero);			
+				String coHospe = leerItemCbo(cboHospedaje);
+				double tPagar = leerDouble(txtTotalPagar);
+				ArregloBungalow bunga = new ArregloBungalow();
+				ArregloHospedaje ah = new ArregloHospedaje();			
+				bunga.Liberarbungalow(nbungalow, 0);			
+				ah.darAltaHospedaje(coHospe, Fecha.fechaSistema(), Fecha.horaSistema(), tPagar);			
+				Pagar= false;
+				limpieza(false);				
+				cargarCombo();			
+			}
+			if (evt.getSource()==btnSalir) {
+				dispose();
+			}
 			
 		}
 		
 		
-		
-		
-		
-		
-		
+		public static int leerEntero(JTextField txt) {
+			return Integer.parseInt(txt.getText().trim());
+		}
+		public static String leerItemCbo(JComboBox<String> cbo) {		
+			return cbo.getSelectedItem().toString();		
+		}
+		public static double leerDouble(JTextField txt) {
+			return Double.parseDouble(txt.getText().trim());
+		}
+
 		
 		
 	
