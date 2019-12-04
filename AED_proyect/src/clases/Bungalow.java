@@ -1,7 +1,7 @@
 package clases;
 
 public class Bungalow {
-  
+ 
 	private int codigo, categoria,estado;
 	private double precio;
 	public Bungalow(int codigo, int categoria, int estado, double precio) {

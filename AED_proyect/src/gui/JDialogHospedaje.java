@@ -6,12 +6,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-
 import arreglos.ArregloHospedaje;
 import arreglos.ArregloIngreso;
 import clases.Hospedaje;
 import librerias.Resaltador;
-
 import javax.swing.JComboBox;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

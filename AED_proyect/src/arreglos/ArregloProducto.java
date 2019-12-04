@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import clases.Producto;
 
 public class ArregloProducto {
-
+	
 	private ArrayList<Producto> pro;
 
 	public ArregloProducto() {

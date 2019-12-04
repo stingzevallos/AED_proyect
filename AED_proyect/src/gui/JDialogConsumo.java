@@ -3,14 +3,12 @@ package gui;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.table.DefaultTableModel;
-
 import arreglos.ArregloConsumos;
 import arreglos.ArregloIngreso;
 import arreglos.ArregloProducto;
 import arreglos.ArregloSocio;
 import clases.Consumo;
 import clases.Producto;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
@@ -18,7 +16,6 @@ import javax.swing.JTextField;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 

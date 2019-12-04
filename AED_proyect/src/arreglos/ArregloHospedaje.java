@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import clases.Hospedaje;
 
 public class ArregloHospedaje {
-	
+
 	ArrayList<Hospedaje> ah;
 	
 	public ArregloHospedaje() {

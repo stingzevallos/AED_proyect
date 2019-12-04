@@ -20,7 +20,7 @@ public class Hospedaje {
 		this.costoHospedaje = costoHospedaje;
 		this.estado = estado;
 	}
-
+	
 	public int getCodigoHospedaje() {
 		return codigoHospedaje;
 	}

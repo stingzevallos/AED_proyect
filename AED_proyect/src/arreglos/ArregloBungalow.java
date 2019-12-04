@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class ArregloBungalow {
-
+	
 	private ArrayList<Bungalow> bun;
 
 	public ArregloBungalow() {

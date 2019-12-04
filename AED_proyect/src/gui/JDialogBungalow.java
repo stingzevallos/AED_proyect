@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.EventQueue;
 import clases.Bungalow;
-import clases.Producto;
 import librerias.Resaltador;
 import arreglos.ArregloBungalow;
 
@@ -15,7 +14,6 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.JButton;
-import javax.swing.JTextArea;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JScrollPane;
@@ -25,6 +23,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class JDialogBungalow extends JDialog implements ActionListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextField txtbunga;
 	private JTextField txtPrecio;
 	private JTextField txtBuscar;
@@ -34,8 +36,8 @@ public class JDialogBungalow extends JDialog implements ActionListener {
 	private JButton button_1;
 	private JButton button_3;
 	private JButton button_4;
-	private JComboBox comboBox;
-	private JComboBox comboBox_2;
+	private JComboBox<String> comboBox;
+	private JComboBox<String> comboBox_2;
 	private JButton btnSalir;
 	private Resaltador resaltado;
 	/**
@@ -122,8 +124,8 @@ public class JDialogBungalow extends JDialog implements ActionListener {
 		button_1.setBounds(161, 137, 91, 23);
 		panel.add(button_1);
 		
-		comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Libre", "Ocupado", "Mantenimiento"}));
+		comboBox = new JComboBox<String>();
+		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Libre", "Ocupado", "Mantenimiento"}));
 		comboBox.setFont(new Font("Tahoma", Font.BOLD, 12));
 		comboBox.setBounds(112, 37, 86, 20);
 		panel.add(comboBox);
@@ -133,9 +135,9 @@ public class JDialogBungalow extends JDialog implements ActionListener {
 		lblCategoria.setBounds(11, 65, 61, 14);
 		panel.add(lblCategoria);
 		
-		comboBox_2 = new JComboBox();
+		comboBox_2 = new JComboBox<String>();
 		comboBox_2.addActionListener(this); 
-		comboBox_2.setModel(new DefaultComboBoxModel(new String[] {"Simple", "Doble", "Familiar"}));
+		comboBox_2.setModel(new DefaultComboBoxModel<String>(new String[] {"Simple", "Doble", "Familiar"}));
 		comboBox_2.setFont(new Font("Tahoma", Font.BOLD, 12));
 		comboBox_2.setBounds(112, 61, 86, 20);
 		panel.add(comboBox_2);

@@ -20,7 +20,7 @@ public class Ingreso {
 		this.costoIngreso = costoIngreso;
 		this.estado = estado;
 	}
-
+	
 	public int getCodigoIngreso() {
 		return codigoIngreso;
 	}

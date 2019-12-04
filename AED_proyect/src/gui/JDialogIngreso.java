@@ -164,7 +164,7 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 		
 		listar();
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if ( e.getSource() == btnIngresar )

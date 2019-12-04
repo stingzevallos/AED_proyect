@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import clases.Ingreso;
 
 public class ArregloIngreso {
-	
+
 	ArrayList<Ingreso> ai;
 	
 	public ArregloIngreso() {
