@@ -8,12 +8,10 @@ import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
-
 import arreglos.ArregloIngreso;
 import clases.Ingreso;
 import librerias.Fecha;
 import librerias.Resaltador;
-
 import java.awt.Color;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
