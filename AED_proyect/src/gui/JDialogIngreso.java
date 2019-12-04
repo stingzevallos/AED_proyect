@@ -2,13 +2,11 @@ package gui;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import arreglos.ArregloIngreso;
@@ -22,7 +20,6 @@ import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import javax.swing.JScrollPane;
 
 public class JDialogIngreso extends JDialog implements ActionListener {
@@ -39,7 +36,7 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 	private JLabel lblCodigoSocio;
 	private JLabel lblNDeInvitados;
 	private JTextField textFieldCodigoIngreso;
-	private JComboBox comboBoxCodigoSocio;
+	private JComboBox<String> comboBoxCodigoSocio;
 	private JTextField textFieldNumInvitados;
 	private JLabel lblSX;
 	private JButton btnIngresar;
@@ -48,7 +45,7 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 	private JTable table;
 	private DefaultTableModel modelo;
 	private JTextField textFieldBuscar;
-	private JComboBox comboBoxBuscador;
+	private JComboBox<String> comboBoxBuscador;
 	
 	Resaltador resaltado;
 
@@ -98,8 +95,8 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 		getContentPane().add(textFieldCodigoIngreso);
 		textFieldCodigoIngreso.setColumns(10);
 		
-		comboBoxCodigoSocio = new JComboBox();
-		comboBoxCodigoSocio.setModel(new DefaultComboBoxModel(new String[] {"10001", "10002", "10003"}));
+		comboBoxCodigoSocio = new JComboBox<String>();
+		comboBoxCodigoSocio.setModel(new DefaultComboBoxModel<String>(new String[] {"10001", "10002", "10003"}));
 		comboBoxCodigoSocio.setBounds(135, 58, 82, 20);
 		getContentPane().add(comboBoxCodigoSocio);
 		
@@ -152,8 +149,8 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 		table.setDefaultRenderer( Object.class, resaltado);
 		
 		
-		comboBoxBuscador = new JComboBox();
-		comboBoxBuscador.setModel(new DefaultComboBoxModel(new String[] {"C\u00F3digo", "DNI"}));
+		comboBoxBuscador = new JComboBox<String>();
+		comboBoxBuscador.setModel(new DefaultComboBoxModel<String>(new String[] {"C\u00F3digo", "DNI"}));
 		comboBoxBuscador.setBounds(10, 146, 86, 20);
 		getContentPane().add(comboBoxBuscador);
 		

@@ -22,7 +22,7 @@ import java.awt.Font;
 import javax.swing.DefaultComboBoxModel;
 
 public class JDialogHospedaje extends JDialog implements ActionListener {
-	
+
 	ArregloHospedaje listaHospedaje = new ArregloHospedaje();
 	ArregloIngreso listaIngreso = new ArregloIngreso();
 	/**
