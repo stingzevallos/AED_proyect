@@ -1,423 +1,451 @@
 package gui;
 
-import librerias.Lectura;
-import librerias.Validacion;
+import java.awt.BorderLayout;
+import javax.swing.table.DefaultTableModel;
+
+import arreglos.ArregloSocio;
+import clases.Socio;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.Color;
-import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableModel;
-
-import clases.Socio;
-
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JTextField;
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
-import javax.swing.JTable;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import librerias.Resaltador;
 
-public class JDialogSocio extends JDialog implements ActionListener, KeyListener{
+import javax.swing.JTable;
+public class JDialogSocio extends JDialog implements ActionListener {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	private JLabel lblPacientes;
-	private JLabel lblAltaPaciente;
-	private JLabel lblListadoPacientes;
-	private JPanel panel;
-	private JComboBox<String> cboSexo;
-	private JLabel lblSexo;
-	private JLabel lblTelefono;
-	private JTextField txtTelefono;
-	private JLabel lblApellidos;
-	private JLabel lblNombres;
-	private JTextField txtCodSocio;
-	private JLabel lblCodPaciente;
-	private JButton btnNuevo;
-	private JButton btnGuardar;
-	private JButton btnCancelar;
-	private JButton btnSalir;
-	private JPanel panel_1;
-	private JComboBox<String> cboBuscar;
-	private JTextField txtBuscar;
-	private JButton btnEliminar;
-	private JScrollPane scrollPane;
-	private JTextField txtNombres;
-	private JTextField txtApellidos;
-	private JLabel lblDni;
+	private final JPanel contentPanel = new JPanel();
+	private JTextField txtCodproducto;
 	private JTextField txtDni;
-	private JTable tableListado;
-	private JButton btnBuscar;
+	private JTextField txtTelefono;
+	private JTextField txtConsultar;
+	private JTable table;
 	private DefaultTableModel modelo;
+	private JButton buttonAdicionar;
+	private JButton buttonModificar;
+	private JButton buttonConsultar;
+	private JButton buttonEliminar;
+
+	/**
+	 * Launch the application.
+	 */
 	
-
-
-	public JDialogSocio() {
-		setTitle("Mantenimiento | Socio");
-		addWindowListener( new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-            	Socio ps = new Socio();
-            	ps.archivarTodo();
-            }
-        });
-		setLocationRelativeTo(getParent());
-		setResizable(false);
-		setBounds(100, 100, 772, 389);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
-		
-		lblPacientes = new JLabel("Socios");
-		lblPacientes.setForeground(Color.BLUE);
-		lblPacientes.setFont(new Font("Segoe UI", Font.BOLD, 14));
-		lblPacientes.setBounds(10, 0, 98, 23);
-		contentPane.add(lblPacientes);
-		
-		lblAltaPaciente = new JLabel("Alta y Modificaci\u00F3n Socios");
-		lblAltaPaciente.setFont(new Font("Segoe UI", Font.BOLD, 12));
-		lblAltaPaciente.setBounds(10, 34, 174, 14);
-		contentPane.add(lblAltaPaciente);
-		
-		lblListadoPacientes = new JLabel("Listado y busqueda socios");
-		lblListadoPacientes.setFont(new Font("Segoe UI", Font.BOLD, 12));
-		lblListadoPacientes.setBounds(362, 34, 217, 14);
-		contentPane.add(lblListadoPacientes);
-		
-		panel = new JPanel();
-		panel.setLayout(null);
-		panel.setForeground(new Color(204, 255, 204));
-		panel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel.setBackground(Color.LIGHT_GRAY);
-		panel.setBounds(10, 55, 329, 252);
-		contentPane.add(panel);
-		
-		cboSexo = new JComboBox<String>();
-		cboSexo.setModel(new DefaultComboBoxModel<String>(new String[] {"Masculino", "Femenino"}));
-		cboSexo.setEnabled(false);
-		cboSexo.setEditable(false);
-		cboSexo.setBounds(158, 179, 151, 20);
-		panel.add(cboSexo);
-		
-		lblSexo = new JLabel("Sexo");
-		lblSexo.setFont(new Font("Segoe UI", Font.BOLD, 12));
-		lblSexo.setEnabled(true);
-		lblSexo.setBounds(10, 179, 82, 14);
-		panel.add(lblSexo);
-		
-		lblTelefono = new JLabel("Telefono");
-		lblTelefono.setFont(new Font("Segoe UI", Font.BOLD, 12));
-		lblTelefono.setEnabled(true);
-		lblTelefono.setBounds(10, 148, 82, 14);
-		panel.add(lblTelefono);
-		
-		txtTelefono = new JTextField();
-		txtTelefono.setEnabled(false);
-		txtTelefono.addKeyListener(this);
-		txtTelefono.setColumns(10);
-		txtTelefono.setBounds(158, 148, 151, 20);
-		panel.add(txtTelefono);
-		
-		lblApellidos = new JLabel("Apellidos");
-		lblApellidos.setFont(new Font("Segoe UI", Font.BOLD, 12));
-		lblApellidos.setEnabled(true);
-		lblApellidos.setBounds(10, 77, 82, 14);
-		panel.add(lblApellidos);
-		
-		lblNombres = new JLabel("Nombres");
-		lblNombres.setFont(new Font("Segoe UI", Font.BOLD, 12));
-		lblNombres.setEnabled(true);
-		lblNombres.setBounds(10, 45, 82, 14);
-		panel.add(lblNombres);
-		
-		txtCodSocio = new JTextField();
-		txtCodSocio.setEditable(false);
-		txtCodSocio.setEnabled(true);
-		txtCodSocio.setColumns(10);
-		txtCodSocio.setBounds(158, 14, 86, 20);
-		panel.add(txtCodSocio);
-		
-		lblCodPaciente = new JLabel("Cod. socio");
-		lblCodPaciente.setFont(new Font("Segoe UI", Font.BOLD, 12));
-		lblCodPaciente.setEnabled(true);
-		lblCodPaciente.setBounds(10, 14, 82, 14);
-		panel.add(lblCodPaciente);
-		
-		btnNuevo = new JButton("Nuevo");
-		btnNuevo.setForeground(Color.WHITE);
-		btnNuevo.setBackground(Color.DARK_GRAY);
-		btnNuevo.addActionListener(this);
-		btnNuevo.setBounds(10, 217, 86, 23);
-		panel.add(btnNuevo);
-		
-		btnGuardar = new JButton("Guardar");
-		btnGuardar.setForeground(Color.WHITE);
-		btnGuardar.setBackground(Color.DARK_GRAY);
-		btnGuardar.setEnabled(false);
-		btnGuardar.addActionListener(this);
-		btnGuardar.setBounds(98, 217, 114, 23);
-		panel.add(btnGuardar);
-		
-		btnCancelar = new JButton("Cancelar");
-		btnCancelar.setForeground(Color.WHITE);
-		btnCancelar.addActionListener(this);
-		btnCancelar.setBackground(Color.DARK_GRAY);
-		btnCancelar.setBounds(214, 217, 105, 23);
-		panel.add(btnCancelar);
-		
-		txtNombres = new JTextField();
-		txtNombres.setBounds(158, 43, 151, 20);
-		txtNombres.setEnabled(false);
-		panel.add(txtNombres);
-		txtNombres.setColumns(10);
-		
-		txtApellidos = new JTextField();
-		txtApellidos.setBounds(158, 75, 151, 20);
-		txtApellidos.setEnabled(false);
-		panel.add(txtApellidos);
-		txtApellidos.setColumns(10);
-		
-		lblDni = new JLabel("N\u00BA DNI");
-		lblDni.setFont(new Font("Segoe UI", Font.BOLD, 12));
-		lblDni.setEnabled(true);
-		lblDni.setBounds(10, 112, 82, 14);
-		panel.add(lblDni);
-		
-		txtDni = new JTextField();
-		txtDni.setColumns(10);
-		txtDni.setBounds(158, 106, 151, 20);
-		txtDni.setEnabled(false);
-		txtDni.addKeyListener(this);
-		panel.add(txtDni);
-		
-		btnSalir = new JButton("Salir");
-		btnSalir.setForeground(Color.WHITE);
-		btnSalir.setBackground(Color.DARK_GRAY);
-		btnSalir.addActionListener(this);
-		btnSalir.setBounds(628, 318, 105, 23);
-		contentPane.add(btnSalir);
-		
-		panel_1 = new JPanel();
-		panel_1.setLayout(null);
-		panel_1.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.setBackground(Color.LIGHT_GRAY);
-		panel_1.setBounds(360, 55, 406, 252);
-		contentPane.add(panel_1);
-		
-		cboBuscar = new JComboBox<String>();
-		cboBuscar.setModel(new DefaultComboBoxModel<String>(new String[] {"Codigo", "DNI"}));
-		cboBuscar.setBounds(10, 11, 79, 20);
-		panel_1.add(cboBuscar);
-		
-		txtBuscar = new JTextField();
-		txtBuscar.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				mouseClickedTxtBuscar(arg0);
-			}
-		});
-		txtBuscar.setColumns(10);
-		txtBuscar.addKeyListener(this);
-		txtBuscar.setBounds(96, 11, 127, 20);
-		panel_1.add(txtBuscar);
-		
-		btnEliminar = new JButton("Eliminar");
-		btnEliminar.setForeground(Color.WHITE);
-		btnEliminar.setEnabled(false);
-		btnEliminar.addActionListener(this);
-		btnEliminar.setBackground(Color.DARK_GRAY);
-		btnEliminar.setBounds(312, 10, 79, 23);
-		panel_1.add(btnEliminar);
-		
-		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 45, 386, 196);
-		panel_1.add(scrollPane);
-		
-		tableListado = new JTable();
-		tableListado.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent ev) {
-				mouseClickedTableListado(ev);
-			}
-		});
-		actualizarTabla();
-		scrollPane.setViewportView(tableListado);
-		
-		btnBuscar = new JButton("Buscar");
-		btnBuscar.setForeground(Color.LIGHT_GRAY);
-		btnBuscar.setBackground(Color.DARK_GRAY);
-		btnBuscar.setBounds(226, 10, 79, 23);
-		btnBuscar.addActionListener(this);
-		panel_1.add(btnBuscar);
+	private JTextField textFieldNombre;
+	private JLabel lblCodigo;
+	private Resaltador resaltado;
+	private JButton buttonSalir;
+	 
+	public static void main(String[] args) {
+		try {
+			JDialogProducto dialog = new JDialogProducto();
+			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialog.setVisible(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	private void inicialize() {
-		txtCodSocio.setText("");
-		txtNombres.setText("");
-		txtApellidos.setText("");
+	/**
+	 * Create the dialog.
+	 */
+	public JDialogSocio() {
+		setModal(true);
+		setTitle("Mantenimiento | Socio");
+		setBounds(100, 100, 768, 431);
+		getContentPane().setLayout(new BorderLayout());
+		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		contentPanel.setLayout(null);
+		{
+			JLabel lblProducto = new JLabel("Socio");
+			lblProducto.setFont(new Font("Tahoma", Font.BOLD, 15));
+			lblProducto.setBounds(10, 23, 78, 19);
+			contentPanel.add(lblProducto);
+		}
+		{
+			JLabel lblRegistroDeProducto = new JLabel("Registro de Socios");
+			lblRegistroDeProducto.setFont(new Font("Tahoma", Font.BOLD, 13));
+			lblRegistroDeProducto.setBounds(10, 53, 240, 25);
+			contentPanel.add(lblRegistroDeProducto);
+		}
+		{
+			JPanel panel = new JPanel();
+			panel.setLayout(null);
+			panel.setForeground(Color.LIGHT_GRAY);
+			panel.setBackground(Color.LIGHT_GRAY);
+			panel.setBounds(10, 86, 298, 246);
+			contentPanel.add(panel);
+			{
+				JLabel lblCodproducto = new JLabel("Cod. Socio");
+				lblCodproducto.setFont(new Font("Tahoma", Font.BOLD, 12));
+				lblCodproducto.setBounds(11, 15, 91, 14);
+				panel.add(lblCodproducto);
+			}
+			{
+				txtCodproducto = new JTextField();
+				txtCodproducto.setEditable(false);
+				txtCodproducto.setColumns(10);
+				txtCodproducto.setBounds(112, 13, 86, 20);
+				panel.add(txtCodproducto);
+				txtCodproducto.setText(String.valueOf(ab.generarCodigo()));
+			    
+			}
+			{
+				JLabel lblStock = new JLabel("Telefono");
+				lblStock.setFont(new Font("Tahoma", Font.BOLD, 12));
+				lblStock.setBounds(11, 115, 61, 14);
+				panel.add(lblStock);
+			}
+			{
+				JLabel lblPrecio = new JLabel("DNI");
+				lblPrecio.setFont(new Font("Tahoma", Font.BOLD, 12));
+				lblPrecio.setBounds(11, 90, 61, 14);
+				panel.add(lblPrecio);
+			}
+			{
+				txtDni = new JTextField();
+				txtDni.setColumns(10);
+				txtDni.setBounds(112, 88, 161, 20);
+				panel.add(txtDni);
+			}
+			{
+				txtTelefono = new JTextField();
+				txtTelefono.setColumns(10);
+				txtTelefono.setBounds(112, 113, 161, 20);
+				panel.add(txtTelefono);
+			}
+			{
+				buttonAdicionar = new JButton("Adicionar");
+				buttonAdicionar.addActionListener(this);
+				buttonAdicionar.setFont(new Font("Tahoma", Font.BOLD, 11));
+				buttonAdicionar.setBounds(82, 160, 92, 23);
+				panel.add(buttonAdicionar);
+			}
+			{
+			    buttonModificar = new JButton("Modificar");
+				buttonModificar.setFont(new Font("Tahoma", Font.BOLD, 11));
+				buttonModificar.setBounds(182, 160, 91, 23);
+				buttonModificar.addActionListener(this);
+				panel.add(buttonModificar);
+			}
+			{
+				JLabel lblNombre = new JLabel("Nombre");
+				lblNombre.setFont(new Font("Tahoma", Font.BOLD, 12));
+				lblNombre.setBounds(11, 40, 61, 14);
+				panel.add(lblNombre);
+			}
+			{
+				textFieldNombre = new JTextField();
+				textFieldNombre.setBounds(112, 38, 161, 20);
+				panel.add(textFieldNombre);
+				textFieldNombre.setColumns(10);
+			}
+			{
+				lblApellidos = new JLabel("Apellidos");
+				lblApellidos.setFont(new Font("Tahoma", Font.BOLD, 12));
+				lblApellidos.setBounds(11, 65, 61, 14);
+				panel.add(lblApellidos);
+			}
+			
+			textFieldApellidos = new JTextField();
+			textFieldApellidos.setBounds(112, 63, 161, 20);
+			panel.add(textFieldApellidos);
+			textFieldApellidos.setColumns(10);
+		}
+		
+		{
+			JPanel panel = new JPanel();
+			panel.setBackground(Color.LIGHT_GRAY);
+			panel.setLayout(null);
+			panel.setBounds(317, 86, 405, 246);
+			contentPanel.add(panel);
+			{
+				txtConsultar = new JTextField();
+				txtConsultar.setColumns(10);
+				txtConsultar.setBounds(66, 13, 109, 20);
+				panel.add(txtConsultar);
+			}
+			{
+				buttonConsultar = new JButton("Consultar");
+				buttonConsultar.setFont(new Font("Tahoma", Font.BOLD, 11));
+				buttonConsultar.addActionListener(this);
+				buttonConsultar.setBounds(213, 12, 92, 23);
+				panel.add(buttonConsultar);
+			}
+			{
+			    buttonEliminar = new JButton("Eliminar");
+				buttonEliminar.setFont(new Font("Tahoma", Font.BOLD, 11));
+				buttonEliminar.addActionListener(this);
+				buttonEliminar.setBounds(315, 12, 79, 23);
+				panel.add(buttonEliminar);
+			}
+			{
+				JScrollPane scrollPane = new JScrollPane();
+				scrollPane.setBounds(10, 43, 384, 192);
+				panel.add(scrollPane);
+				{
+					table = new JTable();
+					table.setFillsViewportHeight(true);
+					scrollPane.setViewportView(table);
+					modelo =  new DefaultTableModel();
+					modelo.addColumn("Código");
+					modelo.addColumn("Nombre");
+					modelo.addColumn("Apellidos");
+					modelo.addColumn("Dni");
+					modelo.addColumn("Telefono");
+					table.setModel(modelo);
+					
+					resaltado = new Resaltador(-1);
+					table.setDefaultRenderer( Object.class, resaltado);
+				}
+			}
+			
+			lblCodigo = new JLabel("Codigo");
+			lblCodigo.setFont(new Font("Tahoma", Font.BOLD, 13));
+			lblCodigo.setBounds(10, 16, 46, 14);
+			panel.add(lblCodigo);
+		}
+		{
+			JLabel lblListadoDeProductos = new JLabel("Listado de socios");
+			lblListadoDeProductos.setFont(new Font("Tahoma", Font.BOLD, 13));
+			lblListadoDeProductos.setBounds(317, 53, 240, 25);
+			contentPanel.add(lblListadoDeProductos);
+		}
+		{
+			buttonSalir = new JButton("Salir");
+			buttonSalir.addActionListener(this);
+			buttonSalir.setFont(new Font("Tahoma", Font.BOLD, 11));
+			buttonSalir.setBounds(630, 345, 92, 23);
+			contentPanel.add(buttonSalir);
+			listar();
+		}
+		
+	}
+
+	ArregloSocio ab =  new ArregloSocio();
+	private JLabel lblApellidos;
+	private JTextField textFieldApellidos;
+	
+	void limpieza() {
+		txtConsultar.setText("");
+		textFieldNombre.setText("");
 		txtDni.setText("");
 		txtTelefono.setText("");
-	}
-	private void habilitar(boolean val) {
-		txtNombres.setEnabled(val);
-		txtApellidos.setEnabled(val);
-		txtDni.setEnabled(val);
-		txtTelefono.setEnabled(val);		
-		btnNuevo.setEnabled(!val);
-		btnGuardar.setEnabled(val);		
-		cboSexo.setEnabled(val);
-		btnEliminar.setEnabled(val);
-	}
+		textFieldNombre.requestFocus();
+	}	
+   	
 	
-	private void actualizarTabla() {
-		modelo = new Socio().mostrar();
-		if(modelo!=null) {
-			tableListado.setModel(modelo);
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if ( e.getSource()== buttonAdicionar){
+			actionPerformedButtonAdicionar(e);
 		}
+		else if ( e.getSource()== buttonModificar ){
+			actionPerformedButtonModificar(e);
+		}
+		else if (e.getSource()==buttonConsultar){
+			actionPerformedButtonConsultar(e);
+		}
+		else if (e.getSource()== buttonEliminar){
+			actionPerformedButtonEliminar(e);		
+		}
+		else
+			actionPerformedButtonSalir(e);
+		
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent ev) {
-		
-		Socio pa = new Socio();
-		if(ev.getSource()==btnGuardar) {
-			int codPac = Lectura.leerEntero(txtCodSocio);
-			String nomPac = Lectura.leerCadena(txtNombres);
-			String apePac = Lectura.leerCadena(txtApellidos);
-			String dniPac = Lectura.leerCadena(txtDni);
-			int telPac = Lectura.leerEntero(txtTelefono);
-			int sexPac = Lectura.leerCbo(cboSexo);
-			if(ev.getActionCommand()=="Guardar") {				
-					if(!nomPac.isEmpty() || !apePac.isEmpty() || !dniPac.isEmpty()) {
-						pa.agregarSocio(new Socio(codPac,nomPac,apePac,dniPac, telPac,sexPac));
-						inicialize();
-						habilitar(false);
-						actualizarTabla();
-						Validacion.mensajeInformacion(this, "Paciente ingresado correctamente");
-					}
-					else {
-						Validacion.mensajeError(this, "Debe ingresar todo los campos solicitados");
-					}
-			}
-			else if(ev.getActionCommand()=="Actualizar") {
-				if(!nomPac.isEmpty() || !apePac.isEmpty() || !dniPac.isEmpty()) {
-					pa.modificar(new Socio(codPac,nomPac,apePac,dniPac, telPac,sexPac), codPac);
-					inicialize();
-					habilitar(false);
-					actualizarTabla();
-					Validacion.mensajeInformacion(this, "Datos del paciente con codigo"+"\n "+codPac + " fueron actualizados.");
-				}
-				else {
-					Validacion.mensajeError(this, "Ingresa todo los campos solicitados");
-				}
-			}
+	private void actionPerformedButtonSalir(ActionEvent e) {
+		dispose();
+	}
 
+	private void actionPerformedButtonEliminar(ActionEvent eo) {
+		resaltado.setFila(-1);
+		try {
+			int codigo = Integer.parseInt(txtConsultar.getText().trim());
+			Socio a = ab.buscar(codigo);
+			if (a == null)
+				mensaje("el CÓDIGO no existe");
+			else {
+				ab.eliminar(a);
+				listar();
+			}
+			limpieza();
+			txtCodproducto.setText(String.valueOf(ab.generarCodigo()));
 		}
-		else if(ev.getSource()==btnCancelar) {
-			habilitar(false);
-			inicialize();
-		}
-		else if(ev.getSource()==btnEliminar) {			
-			int codPac = Lectura.leerEntero(txtCodSocio);			
-			int rpta = Validacion.mensajeConfirmacion(this, "Estas seguro de eliminar el Registro:" + "\n" 
-					    +"Codigo     :"+ Lectura.leerCadena(txtCodSocio) + "\n"
-						+"Nombres :"+ Lectura.leerCadena(txtNombres) + " " + Lectura.leerCadena(txtApellidos)+ "\n"
-						+"DNI            :"+ Lectura.leerCadena(txtDni));
-			if(rpta ==0) {
-				pa.eliminar(pa.buscarPorCod(codPac));
-				inicialize();
-				actualizarTabla();
-				habilitar(false);
-			}		
-			
-		}
-		else if(ev.getSource()==btnNuevo) {
-			habilitar(true);
-			actualizarTabla();
-			btnGuardar.setText("Guardar");
-			btnEliminar.setEnabled(false);
-			txtCodSocio.setText(String.valueOf(pa.asignaCodigo()));
-		}
-		else if(ev.getSource()==btnSalir) {
-			pa.archivarTodo();
-			dispose();
+		catch (Exception e) {
+			error("ingrese CÓDIGO", txtConsultar);
 		}
 		
-		else if(ev.getSource()==btnBuscar) {
-			String param = txtBuscar.getText();
-			int opt = cboBuscar.getSelectedIndex();
-			if(!param.isEmpty()) {
-				modelo = pa.mostrarBusqueda(opt, param);
-				tableListado.setModel(modelo);
+	}
+
+	private void actionPerformedButtonConsultar(ActionEvent es) {
+		try {
+			int codigo = Integer.parseInt(txtConsultar.getText().trim());
+			Socio a = ab.buscar(codigo);
+			if (a == null) {
+				mensaje("el CÓDIGO no existe");
+				limpieza();
 			}
 			else {
-				Validacion.mensajeError(this, "Llene el campo de busqueda");
+				int pos = ab.buscarPosicion(codigo);
+				textFieldNombre.setText(a.getNombre());
+				textFieldApellidos.setText(a.getApellidos());
+				txtDni.setText(a.getDni());
+				txtTelefono.setText("" + a.getTelefono());
+				txtConsultar.requestFocus();
+				listar();
+				resaltado.setFila(pos);
 			}
+			txtCodproducto.setText(String.valueOf(ab.generarCodigo()));
 		}
-		
-		else if(ev.getSource()==txtBuscar) {
-			System.out.println("Evento en el cuadro");
-		}
-	}
-	
-	private void mouseClickedTableListado(MouseEvent ev) {
-		int row = tableListado.getSelectedRow();		
-		txtCodSocio.setText((String) modelo.getValueAt(row, 0));
-		txtNombres.setText((String) modelo.getValueAt(row, 1));
-		txtApellidos.setText((String) modelo.getValueAt(row, 2));
-		txtDni.setText((String) modelo.getValueAt(row, 3));
-		txtTelefono.setText((String) modelo.getValueAt(row, 4));
-		String indSexo = (String) modelo.getValueAt(row, 5);
-		if(indSexo.equals("Femenino")) cboSexo.setSelectedIndex(1);
-		else cboSexo.setSelectedIndex(0);		
-		habilitar(true);
-		btnGuardar.setText("Actualizar");	
-		
-	}
-	
-
-
-	@Override
-	public void keyPressed(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		if(arg0.getSource()==txtBuscar) {
-			actualizarTabla();
+		catch (Exception e) {
+			mensaje("ingrese CÓDIGO");
+			limpieza();
 		}
 	}
 
-	@Override
-	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
+	private void actionPerformedButtonModificar(ActionEvent ee) {
+		resaltado.setFila(-1);
+		try {
+			int codigo = Integer.parseInt(txtConsultar.getText().trim());
+			Socio x = ab.buscar(codigo);
+			if (x != null) {
+				String nombre = leerNombre();
+				if (nombre.length() > 0) {
+					String apellidos = leerApellido();
+					if ( apellidos.length() > 0 ) {
+						String dni = leerDni();
+						if ( dni.length() > 0 ) {
+							try {
+								int telefono = leerTelefono();
+								x.setCodigo(codigo);
+								x.setNombre(nombre);
+								x.setApellidos(apellidos);
+								x.setDni(dni);
+								x.setTelefono(telefono);
+								ab.grabarSocio();
+								
+								listar();
+								limpieza();
+								txtCodproducto.setText(String.valueOf(ab.generarCodigo()));
+							}
+							catch (Exception e) {
+								error("ingrese TELEFONO", txtTelefono);
+							}
+						}
+						else {
+							error("ingrese DNI", txtDni);
+						}
+					}
+					else
+						error("ingrese APELLIDOS", textFieldApellidos);
+				}
+				else 
+					error("ingrese NOMBRE", textFieldNombre);
+			}
+			else
+				error("el CÓDIGO no existe", txtConsultar);
+		}
+		catch (Exception e) {
+			error("ingrese CÓDIGO", txtConsultar);
+		}
+		
 		
 	}
 
-	@Override
-	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		if(arg0.getSource()==txtDni) Validacion.soloNumeros(arg0,txtDni, 8);
-		else if(arg0.getSource()==txtTelefono) Validacion.soloNumeros(arg0,txtTelefono, 9);
-		else if(arg0.getSource()==txtBuscar) Validacion.soloNumeros(arg0, txtBuscar, 8);
-		
-	}
-
+	private void actionPerformedButtonAdicionar(ActionEvent ea) {
+		resaltado.setFila(-1);
+		try {
+			int codigo = leerCodigo();
+			if (ab.buscar(codigo) == null) {
+				String nombre = leerNombre();
+				if (nombre.length() > 0) {
+					String apellidos = leerApellido();
+					if ( apellidos.length() > 0 ) {
+						String dni = leerDni();
+						if ( dni.length() > 0 ) 
+							try {
+								int telefono = leerTelefono();
+								Socio nuevo = new Socio( codigo, nombre, apellidos, dni, telefono);
+								ab.adicionar(nuevo);
+								ab.grabarSocio();
+								listar();
+								limpieza();
 	
-	protected void mouseClickedTxtBuscar(MouseEvent arg0) {
+								txtCodproducto.setText(String.valueOf(ab.generarCodigo()));
+							}
+							catch (Exception e) {
+								error("ingrese TELEFONO", txtTelefono);
+							}
+						else
+							error("ingrese DNI", txtDni);
+					}
+					else 
+						error("ingrese APELLIDOS", textFieldApellidos);
+				}
+				else 
+					error("ingrese NOMBRE", textFieldNombre);
+			}
+			else
+				error("el CÓDIGO ya existe", txtConsultar);
+		}
+		catch (Exception e) {
+			error("ingrese CÓDIGO", txtConsultar);
+		}
 		
-		
+	}
+	
+	void listar() {
+		modelo.setRowCount(0);
+		for (int i=0; i<ab.tamaño(); i++) {
+			Object[] fila = { 	ab.obtener(i).getCodigo(),		
+								ab.obtener(i).getNombre(),
+					          	ab.obtener(i).getApellidos(),
+					          	ab.obtener(i).getDni(),
+					          	ab.obtener(i).getTelefono()
+					         };
+					          
+			modelo.addRow(fila);
+			
+		}
+	}
+//  Métodos tipo void (con parámetros)
+	void mensaje(String s) {
+		JOptionPane.showMessageDialog(this, s);
+	}
+	void error(String s, JTextField txt) {
+		mensaje(s);
+		txt.setText("");
+		txt.requestFocus();
+	}
+	//  Métodos que retornan valor (sin parámetros)
+	int leerCodigo() {
+		return Integer.parseInt(txtCodproducto.getText().trim());
+	}
+	String leerNombre() {
+		return textFieldNombre.getText().trim();
+	}
+	String leerApellido() {
+		return textFieldApellidos.getText().trim();
+	}
+	String leerDni() {
+		return txtDni.getText().trim();
+	}
+	int leerTelefono() {
+		return Integer.parseInt(txtTelefono.getText().trim());
 	}
 }

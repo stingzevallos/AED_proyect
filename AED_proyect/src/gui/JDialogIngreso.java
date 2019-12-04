@@ -2,34 +2,30 @@ package gui;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
-
 import arreglos.ArregloIngreso;
+import arreglos.ArregloSocio;
 import clases.Ingreso;
 import librerias.Fecha;
 import librerias.Resaltador;
-
 import java.awt.Color;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import javax.swing.JScrollPane;
 
 public class JDialogIngreso extends JDialog implements ActionListener {
 
 	
 	ArregloIngreso listaIngreso = new ArregloIngreso();
-	//ArregloSocio listaSocio = new ArregloSocio();
+	ArregloSocio listaSocio = new ArregloSocio();
 	/**
 	 * 
 	 */
@@ -39,7 +35,7 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 	private JLabel lblCodigoSocio;
 	private JLabel lblNDeInvitados;
 	private JTextField textFieldCodigoIngreso;
-	private JComboBox comboBoxCodigoSocio;
+	private JComboBox<String> comboBoxCodigoSocio;
 	private JTextField textFieldNumInvitados;
 	private JLabel lblSX;
 	private JButton btnIngresar;
@@ -48,9 +44,10 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 	private JTable table;
 	private DefaultTableModel modelo;
 	private JTextField textFieldBuscar;
-	private JComboBox comboBoxBuscador;
+	private JComboBox<String> comboBoxBuscador;
 	
 	Resaltador resaltado;
+	private JButton btnCancelar;
 
 	/**
 	 * Launch the application.
@@ -98,8 +95,8 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 		getContentPane().add(textFieldCodigoIngreso);
 		textFieldCodigoIngreso.setColumns(10);
 		
-		comboBoxCodigoSocio = new JComboBox();
-		comboBoxCodigoSocio.setModel(new DefaultComboBoxModel(new String[] {"10001", "10002", "10003"}));
+		comboBoxCodigoSocio = new JComboBox<String>();
+		comboBoxCodigoSocio.setModel(new DefaultComboBoxModel<String>(new String[] {"10001", "10002", "10003"}));
 		comboBoxCodigoSocio.setBounds(135, 58, 82, 20);
 		getContentPane().add(comboBoxCodigoSocio);
 		
@@ -123,7 +120,7 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 		lblListaDeSocio.setBounds(10, 121, 615, 14);
 		getContentPane().add(lblListaDeSocio);
 		
-		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar = new JButton("Cancelar");
 		btnCancelar.setBounds(524, 57, 101, 23);
 		btnCancelar.addActionListener(this);
 		getContentPane().add(btnCancelar);
@@ -152,8 +149,8 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 		table.setDefaultRenderer( Object.class, resaltado);
 		
 		
-		comboBoxBuscador = new JComboBox();
-		comboBoxBuscador.setModel(new DefaultComboBoxModel(new String[] {"C\u00F3digo", "DNI"}));
+		comboBoxBuscador = new JComboBox<String>();
+		comboBoxBuscador.setModel(new DefaultComboBoxModel<String>(new String[] {"C\u00F3digo", "DNI"}));
 		comboBoxBuscador.setBounds(10, 146, 86, 20);
 		getContentPane().add(comboBoxBuscador);
 		
@@ -176,11 +173,11 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 			actionPerformedBtnIngresar(e);
 		else if ( e.getSource() == btnBuscar )
 			actionPerformedBtnBuscar(e);
-		else
+		else if ( e.getSource() == btnCancelar )
 			actionPerformedBtnCancelar(e);
 	}
 
-	private void actionPerformedBtnIngresar(ActionEvent e) { //falta obtener mejor datos, generar auto cod socio
+	private void actionPerformedBtnIngresar(ActionEvent e) { 
 		Ingreso nuevoIngreso;
 		
 		resaltado.setFila(-1);
@@ -231,20 +228,6 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 				error( "Ingrese CODIGO a buscar", textFieldBuscar);
 			}
 		}
-		/*else if ( opcion == 1 ) {
-			String dni = textFieldBuscar.getText().trim();
-			if ( dni.length() > 0 ) {
-				int pos = listaSocio.buscarDni(dni);
-				if ( pos != -1 ) {
-					resaltado.setFila(pos);
-					listar();
-				}
-				else
-					error("No se encontro el CODIGO", textFieldBuscar);
-			}
-			else
-				error( "Ingrese CODIGO a buscar", textFieldBuscar);
-		}*/ // Se pondra despues el buscar dni
 	}
 
 	private void actionPerformedBtnCancelar(ActionEvent e) {
@@ -304,6 +287,11 @@ public class JDialogIngreso extends JDialog implements ActionListener {
 	
 	int leerCostoIngreso() {
 		return leerNumeroInvitados() * 25;
+	}
+	
+	void cargarSocios() {
+		for ( int i=0; i<listaSocio.tamaño(); i++ )
+			comboBoxCodigoSocio.addItem( String.valueOf(listaSocio.obtener(i).getCodigo()) );
 	}
 	
 }

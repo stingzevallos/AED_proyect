@@ -15,6 +15,7 @@ import arreglos.ArregloProducto;
 import arreglos.ArregloSocio;
 import clases.Consumo;
 import clases.Producto;
+import clases.Socio;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -188,7 +189,7 @@ public class JDialogConsumo extends JDialog implements ActionListener {
 
 	private void actionPerfomedComboBoxCodigoSocio(ActionEvent e) {
 		int codigoSocio = leerCodigoSocio();
-		String nombreCompleto = as.buscar(codigoSocio).getNombres() + " " + as.buscar(codigoSocio).getApellidos();
+		String nombreCompleto = as.buscarPorCod(codigoSocio).getNombres() + " " + as.buscarPorCod(codigoSocio).getApellidos();
 		textFieldSocio.setText( nombreCompleto);
 	}
 
@@ -220,7 +221,7 @@ public class JDialogConsumo extends JDialog implements ActionListener {
 		ac.agregarProductos( new Consumo( codigoProducto, detalle, precio, cantidad) );
 		ac.grabarConsumos();
 		
-		labelSocio.setText( as.buscar(codigoProducto).getNombres() + " " + as.buscar(codigoProducto).getApellidos() );
+		labelSocio.setText( as.buscarPorCod(codigoSocio).getNombres() + " " + as.buscarPorCod(codigoSocio).getApellidos() );
 		listar();
 		limpieza();
 		

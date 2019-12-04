@@ -3,8 +3,6 @@ package gui;
 import java.awt.BorderLayout;
 import javax.swing.table.DefaultTableModel;
 
-import java.awt.FlowLayout;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -15,8 +13,6 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JTextField;
-import javax.swing.JTextArea;
-import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -27,6 +23,10 @@ import librerias.Resaltador;
 import javax.swing.JTable;
 public class JDialogProducto extends JDialog implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtCodproducto;
 	private JTextField txtPrecio;

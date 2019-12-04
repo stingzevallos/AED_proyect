@@ -1,107 +1,88 @@
 package arreglos;
-
-import java.util.ArrayList;
-
-import clases.Socio;
-
 import java.io.*;
-
+import java.util.ArrayList;
 import clases.Socio;
 
 public class ArregloSocio {
-	public static void main(String[] args) {
-		
-		ArregloSocio d = new ArregloSocio();
-		ArrayList <Socio> al = d.leerArchivo();
-		
-		System.out.println(al);
-		System.out.println(al.size());
-		System.out.println(al.get(0).getcodSocio());
-		System.out.println(al.get(0).getDni());
-		System.out.println(al.get(0).getNombres());
-		System.out.println(al.get(0).getApellidos());
-		System.out.println(al.get(0).getTelefono());
-	}
 
-	/*Metodo que guarda en el fichero, agrega en la ultima linea*/	
-	public boolean escribirFichero(Socio pac) {
-		BufferedWriter fichero = null;
-		String linea;
-		try {
-			fichero = new BufferedWriter(new FileWriter("Socios.txt", true));
-			linea = pac.getcodSocio() + ";" 				
-				+ pac.getNombres() + ";"
-				+ pac.getApellidos() + ";"
-				+ pac.getDni() + ";" 
-				+ pac.getTelefono() + ";"
-				+ pac.getSexo();
-			fichero.write(linea);
-			fichero.close();
-			return true;
-		}catch(Exception err) {
-			return false;
-		}		
+	private ArrayList<Socio> pro;
+
+	public ArregloSocio() {
+	 pro = new ArrayList<Socio>();
+	 cargarSocio();
 	}
 	
-	public void archivar (ArrayList<Socio> list) {
-		BufferedWriter fichero = null;
-		String linea;
-		try {
-			fichero = new BufferedWriter (new FileWriter("Socios.txt",false));
-			for(Socio pas: list) {
-				linea  = pas.getcodSocio() + ";" 
-						+ pas.getNombres() + ";"
-						+ pas.getApellidos() + ";"
-						+ pas.getDni() + ";"
-						+ pas.getTelefono() + ";"
-						+ pas.getSexo();
-				fichero.write(linea);
-				fichero.newLine();
-			}
-			fichero.close();
-			
-		}catch(Exception err) {
-			
-		}
+	public void adicionar(Socio socio){
+		pro.add(socio);
+	}
+    public int tamaño() {
+		return pro.size();
+	}
+	public Socio obtener(int i) {
+		return pro.get(i);
 	}
 	
-	public boolean eliminarArchivo() {
-		
-		File archivo = new File("socios.txt");
-		if(archivo.exists()) {
-			archivo.delete();
-			return true;
-		}
-	   return false;  
+	public int buscarPosicion( int codigo ) {
+		for ( int i=0; i<tamaño(); i++ )
+			if ( obtener(i).getCodigo() == codigo)
+				return i;
+		return -1;
 	}
-	/*Metodo que lee el fichero*/
-
-	public ArrayList <Socio> leerArchivo(){
+	
+	public Socio buscar(int codigo) {
+		for (int i=0; i<tamaño(); i++)
+			if (obtener(i).getCodigo() == codigo)
+				return obtener(i);
+		return null;
+	}
+	public void eliminar(Socio x) {
+		pro.remove(x);
+	}
+	public int generarCodigo(){
+		return 10001 + tamaño();
+	}
+	
+	
+	public void grabarSocio() {
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("socios.txt"));
+			PrintWriter pw;
 			String linea;
-			String cadena[]=null;
-			ArrayList <Socio> listPacientes = new ArrayList <Socio>();
-			
-			while((linea=br.readLine()) !=null) {
-				cadena=linea.split(";");
-				int codPa = Integer.parseInt(cadena[0]);				
-				String nom = cadena[1];
-				String ape = cadena[2];
-				String dni = cadena[3];
-				int tel = Integer.parseInt(cadena[4]);	
-				int sex = Integer.parseInt(cadena[5]);
-				listPacientes.add(new Socio(codPa,nom,ape,dni,tel,sex));				
+			Socio x;
+			pw = new PrintWriter(new FileWriter("socios.txt"));
+			for (int i=0; i<tamaño(); i++) {
+				x = obtener(i);
+				linea = x.getCodigo() + ";" +
+					    x.getNombre() + ";" +
+						x.getApellidos() + ";" +
+						x.getDni() + ";" +
+						x.getTelefono();
+				pw.println(linea);
+			}
+			pw.close();
+		}
+		catch (Exception e) {
+		}
+	}
+	private void cargarSocio() {
+		try {
+			BufferedReader br;
+			String linea,nombre, apellidos, dni;
+			String[] s;
+			int codigo, telefono;
+			br = new BufferedReader(new FileReader("socios.txt"));
+			while ((linea = br.readLine()) != null) {
+				s = linea.split(";");
+				codigo = Integer.parseInt(s[0].trim());
+				nombre = s[1].trim();
+				apellidos = s[2].trim();
+				dni = s[3].trim();
+				telefono = Integer.parseInt(s[4].trim());
+				adicionar(new Socio(codigo, nombre, apellidos, dni, telefono));
 			}
 			br.close();
-			return listPacientes;
-			
-		}catch(Exception err) {
-			return null;
-		}	
-		
+		}
+		catch (Exception e) {
+		}
 	}
-
+	
 }
-
-
