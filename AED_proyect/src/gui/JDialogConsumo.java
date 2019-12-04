@@ -30,7 +30,6 @@ import javax.swing.JTable;
 import javax.swing.JScrollPane;
 
 public class JDialogConsumo extends JDialog implements ActionListener {
-	
 	/**
 	 * 
 	 */
