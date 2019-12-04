@@ -67,7 +67,7 @@ public class Socio {
 	public int getSexo() {
 		return sexo;
 	}
-	public void setCodPaciente(int codSocio) {
+	public void setCodSocio(int codSocio) {
 		this.codSocio = codSocio;
 	}
 	public void setNombres(String nombres) {
@@ -200,4 +200,6 @@ public class Socio {
 			return null;
 		}
 	}
+
+	
 }

@@ -18,6 +18,7 @@ import java.awt.Color;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import clases.Producto;
 import clases.Socio;
 
 import javax.swing.JComboBox;
@@ -30,7 +31,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JTable;
 
 public class JDialogSocio extends JDialog implements ActionListener, KeyListener{
-
+	Socio pa = new Socio();
 	/**
 	 * 
 	 */
@@ -294,33 +295,35 @@ public class JDialogSocio extends JDialog implements ActionListener, KeyListener
 	@Override
 	public void actionPerformed(ActionEvent ev) {
 		
+		/*para accder a todos los Socios----metodo arraylist*/
 		Socio pa = new Socio();
+		
 		if(ev.getSource()==btnGuardar) {
-			int codPac = Lectura.leerEntero(txtCodSocio);
-			String nomPac = Lectura.leerCadena(txtNombres);
-			String apePac = Lectura.leerCadena(txtApellidos);
-			String dniPac = Lectura.leerCadena(txtDni);
-			int telPac = Lectura.leerEntero(txtTelefono);
-			int sexPac = Lectura.leerCbo(cboSexo);
+			int codSocio = Lectura.leerEntero(txtCodSocio);
+			String nombre = Lectura.leerCadena(txtNombres);
+			String apellidos = Lectura.leerCadena(txtApellidos);
+			String dni = Lectura.leerCadena(txtDni);
+			int telefono = Lectura.leerEntero(txtTelefono);
+			int sexo = Lectura.leerCbo(cboSexo);
 			if(ev.getActionCommand()=="Guardar") {				
-					if(!nomPac.isEmpty() || !apePac.isEmpty() || !dniPac.isEmpty()) {
-						pa.agregarSocio(new Socio(codPac,nomPac,apePac,dniPac, telPac,sexPac));
+					if(!nombre.isEmpty() || !apellidos.isEmpty() || !dni.isEmpty()) {
+						pa.agregarSocio(new Socio(codSocio,nombre,apellidos,dni, telefono,sexo));
 						inicialize();
 						habilitar(false);
 						actualizarTabla();
-						Validacion.mensajeInformacion(this, "Paciente ingresado correctamente");
+						Validacion.mensajeInformacion(this, "Socio ingresado correctamente");
 					}
 					else {
 						Validacion.mensajeError(this, "Debe ingresar todo los campos solicitados");
 					}
 			}
 			else if(ev.getActionCommand()=="Actualizar") {
-				if(!nomPac.isEmpty() || !apePac.isEmpty() || !dniPac.isEmpty()) {
-					pa.modificar(new Socio(codPac,nomPac,apePac,dniPac, telPac,sexPac), codPac);
+				if(!nombre.isEmpty() || !apellidos.isEmpty() || !dni.isEmpty()) {
+					pa.modificar(new Socio(codSocio,nombre,apellidos,dni, telefono,sexo), codSocio);
 					inicialize();
 					habilitar(false);
 					actualizarTabla();
-					Validacion.mensajeInformacion(this, "Datos del paciente con codigo"+"\n "+codPac + " fueron actualizados.");
+					Validacion.mensajeInformacion(this, "Datos del socio con codigo"+"\n "+codSocio + " fueron actualizados.");
 				}
 				else {
 					Validacion.mensajeError(this, "Ingresa todo los campos solicitados");
@@ -374,6 +377,7 @@ public class JDialogSocio extends JDialog implements ActionListener, KeyListener
 			System.out.println("Evento en el cuadro");
 		}
 	}
+	
 	
 	private void mouseClickedTableListado(MouseEvent ev) {
 		int row = tableListado.getSelectedRow();		

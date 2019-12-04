@@ -2,6 +2,7 @@ package arreglos;
 
 import java.util.ArrayList;
 
+import clases.Producto;
 import clases.Socio;
 
 import java.io.*;
@@ -22,6 +23,8 @@ public class ArregloSocio {
 		System.out.println(al.get(0).getApellidos());
 		System.out.println(al.get(0).getTelefono());
 	}
+	
+	
 
 	/*Metodo que guarda en el fichero, agrega en la ultima linea*/	
 	public boolean escribirFichero(Socio pac) {
