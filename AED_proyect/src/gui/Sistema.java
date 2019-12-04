@@ -127,8 +127,8 @@ public class Sistema extends JFrame implements ActionListener {
 	}
 
 	private void actionPerformedMntmSocio(ActionEvent e) {
-		JDialogSocio viewSocio = new JDialogSocio();
-		viewSocio.setVisible(true);
+		JDialogSocio viewProducto = new JDialogSocio();
+		viewProducto.setVisible(true);
 	}
 
 	private void actionPerformedMntmIngreso(ActionEvent e) {
