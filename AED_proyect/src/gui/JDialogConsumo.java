@@ -74,6 +74,13 @@ public class JDialogConsumo extends JDialog implements ActionListener {
 		buttonAgregar = new JButton("Agregar");
 		buttonAgregar.setBounds(445, 11, 89, 23);
 		buttonAgregar.addActionListener(this);
+		
+		textFieldSocio = new JTextField();
+		textFieldSocio.setEditable(false);
+		textFieldSocio.setEnabled(false);
+		textFieldSocio.setBounds(168, 12, 168, 20);
+		getContentPane().add(textFieldSocio);
+		textFieldSocio.setColumns(10);
 		getContentPane().add(buttonAgregar);
 		
 		btnQuitar = new JButton("Quitar");
@@ -91,20 +98,14 @@ public class JDialogConsumo extends JDialog implements ActionListener {
 		getContentPane().add(comboBoxCodigoSocio);
 		generarSociosPendientes();
 		
-		textFieldSocio = new JTextField();
-		textFieldSocio.setEditable(false);
-		textFieldSocio.setEnabled(false);
-		textFieldSocio.setBounds(168, 12, 168, 20);
-		getContentPane().add(textFieldSocio);
-		textFieldSocio.setColumns(10);
+		comboBoxCodigoProducto = new JComboBox<String>();
+		comboBoxCodigoProducto.setBounds(96, 37, 62, 20);
+		comboBoxCodigoProducto.addActionListener(this);
+		getContentPane().add(comboBoxCodigoProducto);
 		
 		lblProducto = new JLabel("Producto");
 		lblProducto.setBounds(10, 40, 76, 14);
 		getContentPane().add(lblProducto);
-		
-		comboBoxCodigoProducto = new JComboBox<String>();
-		comboBoxCodigoProducto.setBounds(96, 37, 62, 20);
-		comboBoxCodigoProducto.addActionListener(this);
 		
 		textFieldProducto = new JTextField();
 		textFieldProducto.setEditable(false);
@@ -116,7 +117,6 @@ public class JDialogConsumo extends JDialog implements ActionListener {
 		lblPrecioUnitario.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		lblPrecioUnitario.setBounds(283, 40, 105, 14);
 		getContentPane().add(lblPrecioUnitario);
-		getContentPane().add(comboBoxCodigoProducto);
 		generarCodigosProductos();
 		
 		lblConsumoDeSocio_1 = new JLabel("CONSUMO DE SOCIO: ");
@@ -177,9 +177,11 @@ public class JDialogConsumo extends JDialog implements ActionListener {
 	}
 
 	private void actionPerfomedComboBoxCodigoSocio(ActionEvent e) {
-		int codigoSocio = leerCodigoSocio();
-		String nombreCompleto = as.buscar(codigoSocio).getNombres() + " " + as.buscar(codigoSocio).getApellidos();
-		textFieldSocio.setText( nombreCompleto);
+		/*if ( comboBoxCodigoSocio.getItemCount() != 0 ) {
+			int codigoSocio = leerCodigoSocio();
+			String nombreCompleto = as.buscar(codigoSocio).getNombres() + " " + as.buscar(codigoSocio).getApellidos();
+			textFieldSocio.setText( nombreCompleto);
+		}*/
 	}
 
 	private void actionPerformedComboBoxCodigoProducto(ActionEvent e) {
