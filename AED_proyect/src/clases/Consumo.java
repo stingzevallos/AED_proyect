@@ -51,6 +51,10 @@ public class Consumo {
 		cantidad += cant;
 	}
 	
+	public void disminuirCantidad( int cant ) {
+		cantidad -= cant;
+	}
+	
 	public double importe() {
 		return precio * cantidad;
 	}

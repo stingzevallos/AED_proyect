@@ -24,6 +24,12 @@ public class ArregloBungalow {
 	public Bungalow obtener(int i) {
 		return bun.get(i);
 	}
+	public int buscarPosicion( int codigo ) {
+		for ( int i=0; i<tamaño(); i++ )
+			if ( obtener(i).getCodigo() == codigo)
+				return i;
+		return -1;
+	}
 	public Bungalow buscar(int codigo) {
 		for (int i=0; i<tamaño(); i++)
 			if (obtener(i).getCodigo() == codigo)
@@ -67,8 +73,8 @@ public class ArregloBungalow {
 			while ((linea = br.readLine()) != null) {
 				s = linea.split(";");
 				codigo = Integer.parseInt(s[0].trim());
-				estado = Integer.parseInt(s[1].trim());
-				categoria = Integer.parseInt(s[2].trim());
+				categoria = Integer.parseInt(s[1].trim());
+				estado = Integer.parseInt(s[2].trim());
 				precio = Double.parseDouble(s[3].trim());
 				adicionar(new Bungalow(codigo, categoria, estado, precio));
 			}

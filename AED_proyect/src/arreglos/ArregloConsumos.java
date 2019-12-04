@@ -40,13 +40,31 @@ public class ArregloConsumos {
 		}
 	}
 	
-	public void quitarProductos( Consumo c ) {
-		ac.remove(c);
+	public void quitarProductos( int cod ) {
+		Consumo c = buscarProductos(cod);
+		if ( c != null )
+			ac.remove(c);
+	}
+	
+	public void quitarProductos( int cod, int cant ) {
+		Consumo c = buscarProductos(cod);
+		if ( c != null ) {
+			c.disminuirCantidad(cant);
+			if ( c.getCantidad() <= 0 )
+				ac.remove(c);
+		}
 	}
 	
 	public Consumo buscarProductos( Consumo c ) {
 		for ( int i=0; i<productosConsumidos(); i++ )
 			if ( obtener(i).getCodigoProducto() == c.getCodigoProducto() )
+				return obtener(i);
+		return null;
+	}
+	
+	public Consumo buscarProductos( int cod ) {
+		for ( int i=0; i<productosConsumidos(); i++ )
+			if ( obtener(i).getCodigoProducto() == cod )
 				return obtener(i);
 		return null;
 	}

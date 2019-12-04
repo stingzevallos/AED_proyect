@@ -23,6 +23,14 @@ public class ArregloProducto {
 	public Producto obtener(int i) {
 		return pro.get(i);
 	}
+	
+	public int buscarPosicion( int codigo ) {
+		for ( int i=0; i<tamaño(); i++ )
+			if ( obtener(i).getCodigo() == codigo)
+				return i;
+		return -1;
+	}
+	
 	public Producto buscar(int codigo) {
 		for (int i=0; i<tamaño(); i++)
 			if (obtener(i).getCodigo() == codigo)
@@ -68,8 +76,8 @@ public class ArregloProducto {
 				s = linea.split(";");
 				codigo = Integer.parseInt(s[0].trim());
 				detalle = s[1].trim();
-				stok = Integer.parseInt(s[2].trim());
-				precio = Double.parseDouble(s[3].trim());
+				precio = Double.parseDouble(s[2].trim());
+				stok = Integer.parseInt(s[3].trim());
 				adicionar(new Producto(codigo, stok, detalle, precio));
 			}
 			br.close();

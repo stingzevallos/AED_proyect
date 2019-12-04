@@ -110,8 +110,5 @@ public class ArregloIngreso {
 	public int generarCodigo() {
 		return 40001 + tamaño();
 	}
-	
-	
-	
 
 }

@@ -22,6 +22,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import arreglos.ArregloProducto;
 import clases.Producto;
+import librerias.Resaltador;
+
 import javax.swing.JTable;
 public class JDialogProducto extends JDialog implements ActionListener {
 
@@ -40,9 +42,11 @@ public class JDialogProducto extends JDialog implements ActionListener {
 	/**
 	 * Launch the application.
 	 */
-	 ArregloProducto ab =  new ArregloProducto();
+	
 	private JTextField txtSDetalle;
 	private JLabel lblCodigo;
+	private Resaltador resaltado;
+	private JButton buttonSalir;
 	 
 	public static void main(String[] args) {
 		try {
@@ -114,34 +118,28 @@ public class JDialogProducto extends JDialog implements ActionListener {
 			{
 				txtPrecio = new JTextField();
 				txtPrecio.setColumns(10);
-				txtPrecio.setBounds(112, 147, 178, 20);
+				txtPrecio.setBounds(112, 147, 161, 20);
 				panel.add(txtPrecio);
 			}
 			{
 				txtStock = new JTextField();
 				txtStock.setColumns(10);
-				txtStock.setBounds(112, 172, 178, 20);
+				txtStock.setBounds(112, 172, 161, 20);
 				panel.add(txtStock);
 			}
 			{
 				button = new JButton("Adicionar");
 				button.addActionListener(this);
 				button.setFont(new Font("Tahoma", Font.BOLD, 11));
-				button.setBounds(4, 212, 92, 23);
+				button.setBounds(80, 212, 92, 23);
 				panel.add(button);
 			}
 			{
 			    button01 = new JButton("Modificar");
 				button01.setFont(new Font("Tahoma", Font.BOLD, 11));
-				button01.setBounds(99, 212, 91, 23);
+				button01.setBounds(182, 212, 91, 23);
 				button01.addActionListener(this);
 				panel.add(button01);
-			}
-			{
-				JButton button = new JButton("Cancelar");
-				button.setFont(new Font("Tahoma", Font.BOLD, 11));
-				button.setBounds(198, 212, 92, 23);
-				panel.add(button);
 			}
 			{
 				JLabel label = new JLabel("Detalle");
@@ -197,6 +195,9 @@ public class JDialogProducto extends JDialog implements ActionListener {
 					modelo.addColumn("Precio");
 					modelo.addColumn("Stock");
 					table.setModel(modelo);
+					
+					resaltado = new Resaltador(-1);
+					table.setDefaultRenderer( Object.class, resaltado);
 				}
 			}
 			
@@ -212,20 +213,24 @@ public class JDialogProducto extends JDialog implements ActionListener {
 			contentPanel.add(lblListadoDeProductos);
 		}
 		{
-			JButton button = new JButton("Salir");
-			button.setFont(new Font("Tahoma", Font.BOLD, 11));
-			button.setBounds(630, 345, 92, 23);
-			contentPanel.add(button);
+			buttonSalir = new JButton("Salir");
+			buttonSalir.addActionListener(this);
+			buttonSalir.setFont(new Font("Tahoma", Font.BOLD, 11));
+			buttonSalir.setBounds(630, 345, 92, 23);
+			contentPanel.add(buttonSalir);
 			listar();
 		}
 		
 	}
+
+	ArregloProducto ab =  new ArregloProducto();
+	
 	void limpieza() {
-		txtCodproducto.setText("");
+		txtConsultar.setText("");
 		txtSDetalle.setText("");
 		txtPrecio.setText("");
 		txtStock.setText("");
-		txtCodproducto.requestFocus();
+		txtSDetalle.requestFocus();
 	}	
    	
 	
@@ -241,11 +246,19 @@ public class JDialogProducto extends JDialog implements ActionListener {
 			actionPerformedButton02(e);
 		}
 		else if (e.getSource()== button03){
-			actionPerformedButton03(e);		}
+			actionPerformedButton03(e);		
+		}
+		else
+			actionPerformedButtonSalir(e);
 		
 	}
 
+	private void actionPerformedButtonSalir(ActionEvent e) {
+		dispose();
+	}
+
 	private void actionPerformedButton03(ActionEvent eo) {
+		resaltado.setFila(-1);
 		try {
 			int codigo = Integer.parseInt(txtConsultar.getText().trim());
 			Producto a = ab.buscar(codigo);
@@ -266,7 +279,6 @@ public class JDialogProducto extends JDialog implements ActionListener {
 	}
 
 	private void actionPerformedButton02(ActionEvent es) {
-		
 		try {
 			int codigo = Integer.parseInt(txtConsultar.getText().trim());
 			Producto a = ab.buscar(codigo);
@@ -275,21 +287,24 @@ public class JDialogProducto extends JDialog implements ActionListener {
 				limpieza();
 			}
 			else {
+				int pos = ab.buscarPosicion(codigo);
 				txtSDetalle.setText(a.getDetalle());
 				txtPrecio.setText("" + a.getPrecio());
 				txtStock.setText("" + a.getStok());
-				txtCodproducto.requestFocus();
+				txtConsultar.requestFocus();
+				listar();
+				resaltado.setFila(pos);
 			}
+			txtCodproducto.setText(String.valueOf(ab.GenerarCodigo()));
 		}
 		catch (Exception e) {
 			mensaje("ingrese CÓDIGO");
 			limpieza();
 		}
-		
 	}
 
 	private void actionPerformedButton01(ActionEvent ee) {
-	
+		resaltado.setFila(-1);
 		try {
 			int codigo = Integer.parseInt(txtConsultar.getText().trim());
 			Producto x = ab.buscar(codigo);
@@ -299,11 +314,12 @@ public class JDialogProducto extends JDialog implements ActionListener {
 					try {
 						double nota1 = leerPrecio();
 						try {
-							int nota2 = leerNota2();
+							int nota2 = leerStock();
 							x.setCodigo(codigo);
 							x.setDetalle(nombre);
 							x.setPrecio(nota1);
 							x.setStok(nota2);
+							ab.grabarProducto();
 							
 							listar();
 							limpieza();
@@ -320,17 +336,17 @@ public class JDialogProducto extends JDialog implements ActionListener {
 					error("ingrese Descripcion", txtSDetalle);
 			}
 			else
-				error("el CÓDIGO no existe", txtCodproducto);
+				error("el CÓDIGO no existe", txtConsultar);
 		}
 		catch (Exception e) {
-			error("ingrese CÓDIGO", txtCodproducto);
+			error("ingrese CÓDIGO", txtConsultar);
 		}
 		
 		
 	}
 
 	private void actionPerformedButton(ActionEvent ea) {
-		
+		resaltado.setFila(-1);
 		try {
 			int codigo = leerCodigo();
 			if (ab.buscar(codigo) == null) {
@@ -339,7 +355,7 @@ public class JDialogProducto extends JDialog implements ActionListener {
 					try {
 						double precio = leerPrecio();
 						try {
-							int stock = leerNota2();
+							int stock = leerStock();
 							Producto nuevo = new Producto(codigo, stock, descripcion,precio );
 							ab.adicionar(nuevo);
 							ab.grabarProducto();
@@ -359,10 +375,10 @@ public class JDialogProducto extends JDialog implements ActionListener {
 					error("ingrese Stock", txtSDetalle);
 			}
 			else
-				error("el CÓDIGO ya existe", txtCodproducto);
+				error("el CÓDIGO ya existe", txtConsultar);
 		}
 		catch (Exception e) {
-			error("ingrese CÓDIGO", txtCodproducto);
+			error("ingrese CÓDIGO", txtConsultar);
 		}
 		
 	}
@@ -396,9 +412,9 @@ public class JDialogProducto extends JDialog implements ActionListener {
 		return txtSDetalle.getText().trim();
 	}
 	double leerPrecio() {
-		return Integer.parseInt(txtPrecio.getText().trim());
+		return Double.parseDouble(txtPrecio.getText().trim());
 	}
-	int leerNota2() {
+	int leerStock() {
 		return Integer.parseInt(txtStock.getText().trim());
 	}
 }
